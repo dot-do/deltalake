@@ -3,6 +3,28 @@
  *
  * Main DeltaTable class for reading and writing Delta Lake tables.
  *
+ * ## Memory Usage and Scalability
+ *
+ * DeltaTable uses a transient in-memory cache during write operations that is
+ * automatically cleared after each commit. Data is persisted to Parquet files
+ * in storage, and queries read directly from these files.
+ *
+ * **Cache Behavior:**
+ * - Write operations temporarily cache data until commit
+ * - Cache is cleared automatically after successful commits
+ * - Query operations fall back to reading Parquet files from storage
+ *
+ * **For Large Datasets:**
+ * - Use `queryStream()` for memory-efficient iteration over single rows
+ * - Use `queryBatch()` for processing rows in configurable batch sizes
+ * - Write data in smaller batches rather than one large write
+ * - Delete/update operations load affected files into memory one at a time
+ *
+ * **Scalability Limits:**
+ * - Individual Parquet files are loaded fully into memory when read
+ * - Tables with many small files may have higher read overhead
+ * - Use compaction to merge small files into larger ones
+ *
  * @module delta/table
  */
 
@@ -229,7 +251,26 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
   private tablePath: string
   private currentVersion: number = -1
   private versionCached: boolean = false
-  // Temporary in-memory storage for testing (will be replaced with actual Parquet reading)
+  /**
+   * In-memory cache for row data during write operations.
+   *
+   * This cache serves as a write-through buffer that holds data temporarily
+   * between writing Parquet files and committing the transaction. The cache
+   * is cleared after each successful commit to prevent memory growth.
+   *
+   * **Memory Usage Patterns:**
+   * - During write(): Data is cached until commit completes
+   * - After commit(): Cache is cleared automatically
+   * - During query(): Falls back to reading Parquet files if not in cache
+   * - During delete/update: Files are read into memory one at a time
+   *
+   * **Scalability Considerations:**
+   * - For very large writes, consider using smaller batches
+   * - For queries on large tables, use queryStream() or queryBatch()
+   * - Delete/update operations load affected file data into memory
+   *
+   * @internal
+   */
   private dataStore: Map<string, T[]> = new Map()
   private checkpointConfig: CheckpointConfig
   private checkpointTimestamps = new Map<number, number>()
@@ -1861,6 +1902,10 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
    * This method provides memory-efficient streaming access to query results.
    * Rows are yielded one at a time, allowing early termination with `break`.
    *
+   * **Recommended for large tables** - Unlike `query()` which loads all results
+   * into memory, this method streams rows one at a time, keeping memory usage
+   * constant regardless of result set size.
+   *
    * @param filter - Optional MongoDB-style filter for matching rows
    * @param options - Optional query options (version, projection)
    * @returns AsyncIterableIterator that yields rows one at a time
@@ -1868,7 +1913,7 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
    *
    * @example
    * ```typescript
-   * // Iterate through all rows
+   * // Iterate through all rows - memory efficient for large tables
    * for await (const row of table.queryIterator()) {
    *   console.log(row)
    * }
@@ -1942,15 +1987,20 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
    * in configurable batch sizes. Useful for processing large datasets
    * in chunks without loading everything into memory.
    *
+   * **Recommended for large tables** - Unlike `query()` which loads all results
+   * into memory at once, this method streams results in configurable batches,
+   * limiting peak memory usage to approximately `batchSize` rows.
+   *
    * @param filter - Optional MongoDB-style filter for matching rows
-   * @param batchSize - Number of rows per batch (default: 1000)
+   * @param batchSize - Number of rows per batch (default: 1000). Smaller batches
+   *   use less memory but may have higher overhead. Adjust based on row size.
    * @param options - Optional query options (version, projection)
    * @returns AsyncIterableIterator that yields arrays of rows
    * @throws ValidationError if filter is not an object or batchSize is invalid
    *
    * @example
    * ```typescript
-   * // Process in batches of 100
+   * // Process in batches of 100 - memory efficient for large tables
    * for await (const batch of table.queryBatch({}, 100)) {
    *   await processBatch(batch)
    * }

@@ -89,6 +89,22 @@ export {
   type ComparisonOperators,
   matchesFilter,
   filterToParquetPredicate,
+  // Aggregation pipeline
+  aggregate,
+  type AggregationPipeline,
+  type AggregationStage,
+  type AggregationResult,
+  type GroupSpec,
+  type SortSpec,
+  type AccumulatorExpression,
+  type AccumulatorOperator,
+  type MatchStage,
+  type GroupStage,
+  type ProjectStage,
+  type SortStage,
+  type LimitStage,
+  type SkipStage,
+  type UnwindStage,
 } from './query/index.js'
 
 // CDC primitives
@@ -98,6 +114,8 @@ export {
   type CDCOperation,
   CDCProducer,
   CDCConsumer,
+  type CDCConsumerOptions,
+  type CDCRecordHandler,
   // Delta Lake CDC extensions
   type DeltaCDCChangeType,
   type DeltaCDCRecord,
@@ -107,6 +125,11 @@ export {
   createCDCDeltaTable,
   // Validation
   isValidCDCConfig,
+  // Offset tracking (Kafka-style consumer semantics)
+  type ConsumerOffset,
+  type OffsetCommitOptions,
+  type OffsetStorage,
+  MemoryOffsetStorage,
 } from './cdc/index.js'
 
 // Delta Lake format

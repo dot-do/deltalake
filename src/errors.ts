@@ -262,6 +262,8 @@ export type CDCErrorCode =
   | 'STORAGE_ERROR'
   | 'PARSE_ERROR'
   | 'EMPTY_WRITE'
+  | 'INVALID_CONSUMER_CONFIG'
+  | 'OFFSET_COMMIT_FAILED'
 
 /**
  * Error thrown when CDC (Change Data Capture) operations fail.

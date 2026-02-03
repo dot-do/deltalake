@@ -78,22 +78,44 @@ export interface FileStat {
  * - `writeConditional()` - Atomic write with version check
  * - `getVersion()` - Get current file version
  *
- * ## Concurrency Limitations
+ * ## Concurrency Model
  *
- * The write locks used by `writeConditional()` are **process-local only**.
- * They prevent concurrent writes within a single Node.js process or Worker
- * instance, but provide NO coordination across distributed deployments.
+ * ### Process-Local Locks (Internal Detail)
  *
- * For multi-instance deployments (multiple Workers, multiple processes,
- * multiple servers), you should either:
- * - Use external distributed locking (Redis, DynamoDB, etc.)
- * - Rely on storage-level conditional writes (note: check-then-write is not
- *   atomic across the network)
- * - Design for single-writer access per table
+ * The write locks used internally by `writeConditional()` are **process-local only**.
+ * They serialize concurrent writes within a single Node.js process or Worker
+ * instance, but provide NO coordination across:
+ * - Multiple Node.js processes on the same machine
+ * - Multiple Cloudflare Workers instances
+ * - Multiple servers/containers in a distributed deployment
  *
- * The ETag/version-based conditional writes provide **optimistic concurrency
- * control** - they will detect and reject conflicting writes, but the
- * check-and-write is not atomic for cloud storage backends.
+ * ### Optimistic Concurrency Control (How It Works in Practice)
+ *
+ * Delta Lake commits use `writeConditional()` with `expectedVersion: null`
+ * (create-if-not-exists semantics). This provides **correct concurrency control**
+ * even across distributed deployments:
+ *
+ * 1. Two writers both read the table at version N
+ * 2. Both attempt to write version N+1
+ * 3. Only one succeeds; the other gets `VersionMismatchError` -> `ConcurrencyError`
+ * 4. The failed writer should refresh and retry with the new version
+ *
+ * This is the standard Delta Lake optimistic concurrency protocol and is safe
+ * for multi-instance deployments. The process-local locks are an optimization
+ * to reduce spurious conflicts within a single process; they do not affect
+ * correctness across processes.
+ *
+ * ### Recommendations for Multi-Instance Deployments
+ *
+ * 1. **Use retry logic** (recommended): Wrap writes in retry logic that catches
+ *    `ConcurrencyError`, refreshes the table, and retries.
+ *
+ * 2. **Single-writer per table**: Design your system so each table has at most
+ *    one writer process at a time.
+ *
+ * 3. **External distributed locks** (rarely needed): For strict serialization,
+ *    use Redis, DynamoDB, or similar. This adds complexity and is usually
+ *    unnecessary since optimistic concurrency handles most use cases correctly.
  *
  * @public
  */

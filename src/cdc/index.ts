@@ -453,6 +453,149 @@ export class CDCProducer<T = unknown> {
 }
 
 // =============================================================================
+// CDC CONSUMER OFFSET TRACKING
+// =============================================================================
+
+/**
+ * Represents a committed consumer offset position.
+ * Similar to Kafka's consumer offset concept for tracking processing progress.
+ *
+ * @public
+ */
+export interface ConsumerOffset {
+  /** The sequence number (offset) that has been processed */
+  readonly offset: bigint
+
+  /** Optional partition identifier (for multi-partition topics) */
+  readonly partition?: number
+
+  /** Timestamp when this offset was committed */
+  readonly committedAt: Date
+
+  /** Optional metadata associated with this offset commit */
+  readonly metadata?: string
+}
+
+/**
+ * Options for committing consumer offsets.
+ *
+ * @public
+ */
+export interface OffsetCommitOptions {
+  /**
+   * Whether to commit synchronously (wait for confirmation) or asynchronously.
+   * Defaults to synchronous (true).
+   */
+  readonly sync?: boolean
+
+  /** Optional metadata to store with the committed offset */
+  readonly metadata?: string
+}
+
+/**
+ * Storage interface for persisting consumer offsets.
+ * Implement this interface to provide custom offset storage backends
+ * (e.g., Redis, database, file system).
+ *
+ * @public
+ */
+export interface OffsetStorage {
+  /**
+   * Get the committed offset for a consumer group and topic.
+   *
+   * @param groupId - The consumer group identifier
+   * @param topic - The topic/table identifier
+   * @param partition - Optional partition number (defaults to 0)
+   * @returns The committed offset, or null if no offset has been committed
+   */
+  getOffset(groupId: string, topic: string, partition?: number): Promise<ConsumerOffset | null>
+
+  /**
+   * Commit an offset for a consumer group and topic.
+   *
+   * @param groupId - The consumer group identifier
+   * @param topic - The topic/table identifier
+   * @param offset - The offset to commit
+   * @param partition - Optional partition number (defaults to 0)
+   */
+  commitOffset(groupId: string, topic: string, offset: ConsumerOffset, partition?: number): Promise<void>
+
+  /**
+   * Delete the committed offset for a consumer group and topic.
+   *
+   * @param groupId - The consumer group identifier
+   * @param topic - The topic/table identifier
+   * @param partition - Optional partition number (defaults to 0)
+   */
+  deleteOffset(groupId: string, topic: string, partition?: number): Promise<void>
+
+  /**
+   * List all committed offsets for a consumer group.
+   *
+   * @param groupId - The consumer group identifier
+   * @returns Map of topic-partition to committed offset
+   */
+  listOffsets(groupId: string): Promise<Map<string, ConsumerOffset>>
+}
+
+/**
+ * In-memory offset storage implementation.
+ * Useful for testing and simple single-process scenarios.
+ * Note: Offsets are lost when the process restarts.
+ *
+ * @public
+ *
+ * @example
+ * ```typescript
+ * const storage = new MemoryOffsetStorage()
+ * const consumer = new CDCConsumer({
+ *   groupId: 'my-consumer-group',
+ *   topic: 'events',
+ *   offsetStorage: storage
+ * })
+ * ```
+ */
+export class MemoryOffsetStorage implements OffsetStorage {
+  private readonly offsets: Map<string, ConsumerOffset> = new Map()
+
+  private makeKey(groupId: string, topic: string, partition: number = 0): string {
+    return `${groupId}:${topic}:${partition}`
+  }
+
+  async getOffset(groupId: string, topic: string, partition: number = 0): Promise<ConsumerOffset | null> {
+    const key = this.makeKey(groupId, topic, partition)
+    return this.offsets.get(key) ?? null
+  }
+
+  async commitOffset(groupId: string, topic: string, offset: ConsumerOffset, partition: number = 0): Promise<void> {
+    const key = this.makeKey(groupId, topic, partition)
+    this.offsets.set(key, offset)
+  }
+
+  async deleteOffset(groupId: string, topic: string, partition: number = 0): Promise<void> {
+    const key = this.makeKey(groupId, topic, partition)
+    this.offsets.delete(key)
+  }
+
+  async listOffsets(groupId: string): Promise<Map<string, ConsumerOffset>> {
+    const result = new Map<string, ConsumerOffset>()
+    for (const [key, offset] of this.offsets) {
+      if (key.startsWith(`${groupId}:`)) {
+        result.set(key, offset)
+      }
+    }
+    return result
+  }
+
+  /**
+   * Clear all stored offsets. Useful for testing.
+   */
+  clear(): void {
+    this.offsets.clear()
+  }
+}
+
+// =============================================================================
 // CDC CONSUMER
 // =============================================================================
 
@@ -470,6 +613,46 @@ export interface CDCConsumerOptions {
 
   /** Filter by operation types (only these operations are processed) */
   readonly operations?: readonly CDCOperation[]
+
+  /**
+   * Consumer group identifier for offset tracking.
+   * Required when using offset storage for persistent offset tracking.
+   */
+  readonly groupId?: string
+
+  /**
+   * Topic/table identifier for offset tracking.
+   * Required when using offset storage for persistent offset tracking.
+   */
+  readonly topic?: string
+
+  /**
+   * Partition number for multi-partition topics.
+   * Defaults to 0.
+   */
+  readonly partition?: number
+
+  /**
+   * Offset storage backend for persisting committed offsets.
+   * If not provided, offsets are only tracked in memory for the
+   * lifetime of the consumer instance.
+   */
+  readonly offsetStorage?: OffsetStorage
+
+  /**
+   * Whether to enable auto-commit of offsets after processing.
+   * When enabled, offsets are automatically committed after each
+   * successful process() call.
+   * Defaults to false (manual commit required).
+   */
+  readonly enableAutoCommit?: boolean
+
+  /**
+   * Interval in milliseconds for auto-committing offsets.
+   * Only used when enableAutoCommit is true.
+   * If not set, offsets are committed after every record.
+   */
+  readonly autoCommitIntervalMs?: number
 }
 
 /**
@@ -481,7 +664,8 @@ export type CDCRecordHandler<T> = (record: CDCRecord<T>) => Promise<void>
 
 /**
  * CDC Consumer for processing CDC records.
- * Supports filtering, position tracking, and multiple subscribers.
+ * Supports filtering, position tracking, multiple subscribers, and
+ * explicit offset management for Kafka-like consumer semantics.
  *
  * @template T - The data type being consumed
  *
@@ -489,6 +673,7 @@ export type CDCRecordHandler<T> = (record: CDCRecord<T>) => Promise<void>
  *
  * @example
  * ```typescript
+ * // Basic usage
  * const consumer = new CDCConsumer<User>({
  *   fromSeq: 100n,
  *   operations: ['c', 'u'] // Only creates and updates
@@ -500,12 +685,42 @@ export type CDCRecordHandler<T> = (record: CDCRecord<T>) => Promise<void>
  *
  * await consumer.process(record)
  * ```
+ *
+ * @example
+ * ```typescript
+ * // With explicit offset tracking (Kafka-style)
+ * const offsetStorage = new MemoryOffsetStorage()
+ * const consumer = new CDCConsumer<User>({
+ *   groupId: 'my-consumer-group',
+ *   topic: 'user-events',
+ *   offsetStorage,
+ * })
+ *
+ * // Resume from last committed offset
+ * await consumer.resumeFromCommittedOffset()
+ *
+ * consumer.subscribe(async (record) => {
+ *   await processRecord(record)
+ *   // Manually commit offset after successful processing
+ *   await consumer.commitCurrentOffset()
+ * })
+ * ```
  */
 export class CDCConsumer<T = unknown> {
   private readonly handlers: CDCRecordHandler<T>[] = []
   private position: bigint = 0n
   private readonly operationsSet: Set<CDCOperation> | null
   private timestampFilter: Date | undefined
+  private committedOffset: ConsumerOffset | null = null
+  private lastAutoCommitTime: number = 0
+
+  // Offset tracking configuration
+  private readonly groupId: string | undefined
+  private readonly topic: string | undefined
+  private readonly partition: number
+  private offsetStorage: OffsetStorage | undefined
+  private readonly enableAutoCommit: boolean
+  private readonly autoCommitIntervalMs: number | undefined
 
   constructor(private readonly options: CDCConsumerOptions = {}) {
     if (options.fromSeq !== undefined) {
@@ -515,6 +730,14 @@ export class CDCConsumer<T = unknown> {
     this.operationsSet = options.operations
       ? new Set(options.operations)
       : null
+
+    // Initialize offset tracking configuration
+    this.groupId = options.groupId
+    this.topic = options.topic
+    this.partition = options.partition ?? 0
+    this.offsetStorage = options.offsetStorage
+    this.enableAutoCommit = options.enableAutoCommit ?? false
+    this.autoCommitIntervalMs = options.autoCommitIntervalMs
   }
 
   /**
@@ -596,6 +819,16 @@ export class CDCConsumer<T = unknown> {
     // Notify handlers in parallel
     await Promise.all(this.handlers.map(h => h(record)))
     this.position = record._seq + 1n
+
+    // Auto-commit if enabled
+    if (this.shouldAutoCommit()) {
+      try {
+        await this.commitCurrentOffset({ sync: false })
+      } catch {
+        // Auto-commit errors are logged but not thrown
+        // to avoid interrupting processing
+      }
+    }
   }
 
   /**
@@ -671,6 +904,302 @@ export class CDCConsumer<T = unknown> {
    */
   getSubscriberCount(): number {
     return this.handlers.length
+  }
+
+  // ---------------------------------------------------------------------------
+  // Offset Tracking Methods (Kafka-style consumer semantics)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Commit the current position as an offset.
+   *
+   * This method commits the current processing position to the offset storage,
+   * allowing the consumer to resume from this point after a restart.
+   * This is similar to Kafka's `commitSync()` behavior.
+   *
+   * @param options - Optional commit options (sync mode, metadata)
+   * @returns The committed offset
+   * @throws {CDCError} If groupId, topic, or offsetStorage is not configured
+   *
+   * @example
+   * ```typescript
+   * // Process records and commit after each successful batch
+   * for await (const record of records) {
+   *   await consumer.process(record)
+   * }
+   * // Commit after batch processing
+   * await consumer.commitCurrentOffset()
+   * ```
+   */
+  async commitCurrentOffset(options?: OffsetCommitOptions): Promise<ConsumerOffset> {
+    return this.commitOffset(this.position, options)
+  }
+
+  /**
+   * Commit a specific offset position.
+   *
+   * This method commits a specific sequence number to the offset storage.
+   * Use this for fine-grained control over offset commits, such as when
+   * implementing "at-least-once" or "exactly-once" processing guarantees.
+   *
+   * @param offset - The sequence number to commit
+   * @param options - Optional commit options (sync mode, metadata)
+   * @returns The committed offset
+   * @throws {CDCError} If groupId, topic, or offsetStorage is not configured
+   *
+   * @example
+   * ```typescript
+   * // Commit a specific offset after custom processing logic
+   * await consumer.commitOffset(lastProcessedSeq + 1n, {
+   *   metadata: JSON.stringify({ processedBy: 'worker-1' })
+   * })
+   * ```
+   */
+  async commitOffset(offset: bigint, options?: OffsetCommitOptions): Promise<ConsumerOffset> {
+    this.validateOffsetStorageConfig()
+
+    const consumerOffset: ConsumerOffset = {
+      offset,
+      partition: this.partition,
+      committedAt: new Date(),
+      ...(options?.metadata !== undefined && { metadata: options.metadata }),
+    }
+
+    // Default to synchronous commit
+    const sync = options?.sync ?? true
+
+    if (sync) {
+      await this.offsetStorage!.commitOffset(
+        this.groupId!,
+        this.topic!,
+        consumerOffset,
+        this.partition
+      )
+    } else {
+      // Async commit - fire and forget
+      this.offsetStorage!.commitOffset(
+        this.groupId!,
+        this.topic!,
+        consumerOffset,
+        this.partition
+      ).catch(error => {
+        // Log async commit error but don't throw
+        console.error('[CDC Consumer] Async offset commit failed:', error)
+      })
+    }
+
+    this.committedOffset = consumerOffset
+    return consumerOffset
+  }
+
+  /**
+   * Get the last committed offset for this consumer.
+   *
+   * Returns the offset from the local cache if available, otherwise
+   * fetches from the offset storage.
+   *
+   * @param forceRefresh - If true, always fetch from storage (default: false)
+   * @returns The last committed offset, or null if no offset has been committed
+   * @throws {CDCError} If groupId, topic, or offsetStorage is not configured
+   *
+   * @example
+   * ```typescript
+   * const committed = await consumer.getCommittedOffset()
+   * if (committed) {
+   *   console.log(`Last committed offset: ${committed.offset}`)
+   * }
+   * ```
+   */
+  async getCommittedOffset(forceRefresh: boolean = false): Promise<ConsumerOffset | null> {
+    this.validateOffsetStorageConfig()
+
+    if (!forceRefresh && this.committedOffset !== null) {
+      return this.committedOffset
+    }
+
+    const offset = await this.offsetStorage!.getOffset(
+      this.groupId!,
+      this.topic!,
+      this.partition
+    )
+
+    this.committedOffset = offset
+    return offset
+  }
+
+  /**
+   * Resume processing from the last committed offset.
+   *
+   * This method fetches the last committed offset from storage and
+   * seeks to that position, allowing the consumer to resume where it
+   * left off after a restart.
+   *
+   * @returns The offset that was resumed from, or null if no offset was committed
+   * @throws {CDCError} If groupId, topic, or offsetStorage is not configured
+   *
+   * @example
+   * ```typescript
+   * // At startup, resume from last position
+   * const resumedFrom = await consumer.resumeFromCommittedOffset()
+   * if (resumedFrom) {
+   *   console.log(`Resuming from offset ${resumedFrom.offset}`)
+   * } else {
+   *   console.log('Starting from beginning (no committed offset)')
+   * }
+   * ```
+   */
+  async resumeFromCommittedOffset(): Promise<ConsumerOffset | null> {
+    const committed = await this.getCommittedOffset(true)
+
+    if (committed !== null) {
+      this.seekTo(committed.offset)
+    }
+
+    return committed
+  }
+
+  /**
+   * Reset the committed offset to the beginning.
+   *
+   * This deletes the committed offset from storage, causing the consumer
+   * to start from the beginning on the next resume.
+   *
+   * @throws {CDCError} If groupId, topic, or offsetStorage is not configured
+   *
+   * @example
+   * ```typescript
+   * // Reset consumer to reprocess all records
+   * await consumer.resetOffset()
+   * consumer.seekTo(0n)
+   * ```
+   */
+  async resetOffset(): Promise<void> {
+    this.validateOffsetStorageConfig()
+
+    await this.offsetStorage!.deleteOffset(
+      this.groupId!,
+      this.topic!,
+      this.partition
+    )
+
+    this.committedOffset = null
+  }
+
+  /**
+   * Set the offset storage backend.
+   *
+   * Use this to configure or change the offset storage after construction.
+   *
+   * @param storage - The offset storage implementation to use
+   *
+   * @example
+   * ```typescript
+   * // Switch to a different storage backend
+   * consumer.setOffsetStorage(new RedisOffsetStorage(redisClient))
+   * ```
+   */
+  setOffsetStorage(storage: OffsetStorage): void {
+    this.offsetStorage = storage
+  }
+
+  /**
+   * Check if offset tracking is fully configured.
+   *
+   * Returns true if groupId, topic, and offsetStorage are all set,
+   * meaning offset commit/resume operations can be performed.
+   *
+   * @returns True if offset tracking is configured
+   *
+   * @example
+   * ```typescript
+   * if (consumer.isOffsetTrackingEnabled()) {
+   *   await consumer.commitCurrentOffset()
+   * }
+   * ```
+   */
+  isOffsetTrackingEnabled(): boolean {
+    return !!(this.groupId && this.topic && this.offsetStorage)
+  }
+
+  /**
+   * Get the consumer group ID.
+   *
+   * @returns The consumer group ID, or undefined if not configured
+   */
+  getGroupId(): string | undefined {
+    return this.groupId
+  }
+
+  /**
+   * Get the topic/table identifier.
+   *
+   * @returns The topic identifier, or undefined if not configured
+   */
+  getTopic(): string | undefined {
+    return this.topic
+  }
+
+  /**
+   * Get the partition number.
+   *
+   * @returns The partition number (defaults to 0)
+   */
+  getPartition(): number {
+    return this.partition
+  }
+
+  // ---------------------------------------------------------------------------
+  // Private helpers
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Validate that offset storage configuration is complete.
+   * @throws {CDCError} If configuration is missing
+   */
+  private validateOffsetStorageConfig(): void {
+    if (!this.groupId) {
+      throw new CDCError(
+        'Consumer groupId is required for offset tracking. ' +
+        'Configure groupId in CDCConsumerOptions.',
+        'INVALID_CONSUMER_CONFIG'
+      )
+    }
+    if (!this.topic) {
+      throw new CDCError(
+        'Consumer topic is required for offset tracking. ' +
+        'Configure topic in CDCConsumerOptions.',
+        'INVALID_CONSUMER_CONFIG'
+      )
+    }
+    if (!this.offsetStorage) {
+      throw new CDCError(
+        'Offset storage is required for offset tracking. ' +
+        'Configure offsetStorage in CDCConsumerOptions or call setOffsetStorage().',
+        'INVALID_CONSUMER_CONFIG'
+      )
+    }
+  }
+
+  /**
+   * Check if auto-commit should be triggered based on interval.
+   */
+  private shouldAutoCommit(): boolean {
+    if (!this.enableAutoCommit || !this.isOffsetTrackingEnabled()) {
+      return false
+    }
+
+    if (this.autoCommitIntervalMs === undefined) {
+      // Commit after every record
+      return true
+    }
+
+    const now = Date.now()
+    if (now - this.lastAutoCommitTime >= this.autoCommitIntervalMs) {
+      this.lastAutoCommitTime = now
+      return true
+    }
+
+    return false
   }
 }
 

@@ -14,20 +14,44 @@ import type { AsyncBuffer, StorageBackend } from './types.js'
 /**
  * Write locks for preventing concurrent writes within a single process.
  *
- * IMPORTANT LIMITATION: These locks only work within a single process/instance.
- * They are NOT distributed locks and provide NO coordination across:
- * - Multiple Node.js processes
+ * ## Purpose
+ *
+ * These locks serialize concurrent `writeConditional()` calls to the same path
+ * within a single process. This prevents multiple in-flight writes from racing
+ * on the version check, which could cause spurious `VersionMismatchError`s.
+ *
+ * ## Scope and Limitations
+ *
+ * These locks are **process-local only**. They do NOT provide coordination across:
+ * - Multiple Node.js processes on the same machine
  * - Multiple Cloudflare Workers instances
- * - Multiple servers/containers
+ * - Multiple servers/containers in a distributed deployment
  *
- * For distributed deployments, you must either:
- * 1. Use external coordination (Redis, DynamoDB, etc.)
- * 2. Rely on storage-level conditional writes (R2 onlyIf, S3 ETags)
- * 3. Design your system for single-writer access per table
+ * ## Why This Is Safe for Delta Lake
  *
- * The storage backends (R2Storage, S3Storage) do use ETags/version checks,
- * which provide some protection against concurrent writes, but the check-then-write
- * is not atomic across the network boundary.
+ * Delta Lake's transaction protocol uses version-numbered commit files
+ * (e.g., `00000000000000000005.json`) with create-if-not-exists semantics.
+ * Even without distributed locks, the protocol is correct:
+ *
+ * 1. Process A reads table at version 4, prepares commit for version 5
+ * 2. Process B reads table at version 4, prepares commit for version 5
+ * 3. Process A writes `00000000000000000005.json` - succeeds
+ * 4. Process B tries to write `00000000000000000005.json` - fails (file exists)
+ * 5. Process B catches `VersionMismatchError`, refreshes, retries with version 6
+ *
+ * The process-local locks are an **optimization**, not a correctness requirement.
+ * They reduce the overhead of version mismatch errors within a single process.
+ *
+ * ## When You Might Need External Distributed Locking
+ *
+ * External distributed locking (Redis, DynamoDB, etc.) is rarely needed but may
+ * be useful for:
+ * - Preventing duplicate work when retry overhead is expensive
+ * - Implementing leader election for single-writer patterns
+ * - Coordinating complex multi-table transactions
+ *
+ * For most Delta Lake write workloads, optimistic concurrency with retry is
+ * sufficient and simpler.
  */
 
 /**

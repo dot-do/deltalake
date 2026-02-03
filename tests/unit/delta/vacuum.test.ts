@@ -552,4 +552,425 @@ describe('VACUUM Operation', () => {
       expect(metrics.filesDeleted).toBe(2)
     })
   })
+
+  // =============================================================================
+  // CONCURRENT VACUUM OPERATIONS TESTS
+  // =============================================================================
+
+  describe('concurrent vacuum operations', () => {
+    describe('vacuum during active writes', () => {
+      it('should not delete files being written during vacuum', async () => {
+        const table = await createTableWithData(storage, 'test-table', 2)
+        const orphanedPaths = await createOrphanedFiles(storage, 'test-table', 5)
+
+        // Start vacuum and writes concurrently
+        const [vacuumResult, writeResult] = await Promise.all([
+          vacuum(table, { retentionHours: 1 }),
+          table.write([{ id: 'new-1', value: 1000 }]),
+        ])
+
+        // Vacuum should complete successfully
+        expect(vacuumResult.filesDeleted).toBe(5)
+
+        // Write should complete successfully
+        expect(writeResult.version).toBeGreaterThanOrEqual(2)
+
+        // New file from write should still exist
+        const snapshot = await table.snapshot()
+        expect(snapshot.files.length).toBeGreaterThan(0)
+
+        // All orphaned files should be deleted
+        for (const path of orphanedPaths) {
+          expect(await storage.exists(path)).toBe(false)
+        }
+      })
+
+      it('should protect files added by concurrent writes', async () => {
+        const table = await createTableWithData(storage, 'test-table', 1)
+        await createOrphanedFiles(storage, 'test-table', 3)
+
+        // Get initial snapshot to know active files
+        const initialSnapshot = await table.snapshot()
+        const initialFilePaths = initialSnapshot.files.map(f => f.path)
+
+        // Run vacuum and multiple writes concurrently
+        const [vacuumResult, write1Result, write2Result] = await Promise.all([
+          vacuum(table, { retentionHours: 1 }),
+          table.write([{ id: 'concurrent-1', value: 100 }]),
+          (async () => {
+            // Small delay to ensure write happens during vacuum scanning phase
+            await new Promise(resolve => setTimeout(resolve, 10))
+            return table.write([{ id: 'concurrent-2', value: 200 }])
+          })(),
+        ])
+
+        // All operations should succeed
+        expect(vacuumResult.dryRun).toBe(false)
+        expect(write1Result).toBeDefined()
+        expect(write2Result).toBeDefined()
+
+        // Original active files should still exist
+        for (const path of initialFilePaths) {
+          expect(await storage.exists(path)).toBe(true)
+        }
+      })
+
+      it('should handle rapid writes during vacuum', async () => {
+        const table = await createTableWithData(storage, 'test-table', 1)
+        await createOrphanedFiles(storage, 'test-table', 10)
+
+        // Start vacuum and many rapid writes
+        // Note: Concurrent writes to the same table will conflict (by design),
+        // so we use Promise.allSettled to handle expected concurrency errors
+        const writePromises = Array.from({ length: 5 }, (_, i) =>
+          table.write([{ id: `rapid-${i}`, value: i * 100 }])
+        )
+
+        const results = await Promise.allSettled([
+          vacuum(table, { retentionHours: 1 }),
+          ...writePromises,
+        ])
+
+        // Vacuum should always succeed
+        expect(results[0].status).toBe('fulfilled')
+        const vacuumMetrics = (results[0] as PromiseFulfilledResult<VacuumMetrics>).value
+        expect(vacuumMetrics.filesScanned).toBeGreaterThan(0)
+
+        // At least one write should succeed (concurrent writes conflict by design)
+        const successfulWrites = results.slice(1).filter(r => r.status === 'fulfilled')
+        expect(successfulWrites.length).toBeGreaterThanOrEqual(1)
+
+        // Verify table is still consistent after concurrent activity
+        const finalSnapshot = await table.snapshot()
+        expect(finalSnapshot.files.length).toBeGreaterThanOrEqual(2) // Initial + at least 1 write
+      })
+    })
+
+    describe('multiple concurrent vacuums', () => {
+      it('should handle three concurrent vacuum operations', async () => {
+        const table = await createTableWithData(storage, 'test-table', 2)
+        const orphanedPaths = await createOrphanedFiles(storage, 'test-table', 15)
+
+        // Run three vacuum operations concurrently
+        const results = await Promise.all([
+          vacuum(table, { retentionHours: 1 }),
+          vacuum(table, { retentionHours: 1 }),
+          vacuum(table, { retentionHours: 1 }),
+        ])
+
+        // All should complete without errors
+        expect(results.length).toBe(3)
+        results.forEach(result => {
+          expect(result.dryRun).toBe(false)
+          expect(result.filesScanned).toBeGreaterThan(0)
+        })
+
+        // All orphaned files should be deleted
+        for (const path of orphanedPaths) {
+          expect(await storage.exists(path)).toBe(false)
+        }
+
+        // Combined deletions should account for all orphaned files
+        // (One vacuum deletes them, others find them already gone)
+        const totalDeleted = results.reduce((sum, m) => sum + m.filesDeleted, 0)
+        expect(totalDeleted).toBeGreaterThanOrEqual(15)
+      })
+
+      it('should handle concurrent vacuums with different retention periods', async () => {
+        const table = await createTableWithData(storage, 'test-table', 1)
+
+        // Create files with different ages
+        const recentOrphanedPaths = await createOrphanedFiles(storage, 'test-table', 3, 12) // 12 hours old
+        const oldOrphanedPaths = await createOrphanedFiles(storage, 'test-table', 5, 200) // 200 hours old
+
+        // Run vacuums with different retention periods concurrently
+        const results = await Promise.all([
+          vacuum(table, { retentionHours: 24 }), // Should delete only old files
+          vacuum(table, { retentionHours: 1 }),  // Should delete all orphaned files
+        ])
+
+        // Both should complete
+        expect(results.length).toBe(2)
+
+        // All old orphaned files should definitely be deleted
+        for (const path of oldOrphanedPaths) {
+          expect(await storage.exists(path)).toBe(false)
+        }
+
+        // Recent files might be deleted by the 1-hour retention vacuum
+        // but that's OK - the test verifies no crashes or data corruption
+      })
+
+      it('should correctly report metrics when concurrent vacuums race', async () => {
+        const table = await createTableWithData(storage, 'test-table', 1)
+        await createOrphanedFiles(storage, 'test-table', 20)
+
+        // Run 5 concurrent vacuums
+        const results = await Promise.all(
+          Array.from({ length: 5 }, () => vacuum(table, { retentionHours: 1 }))
+        )
+
+        // All should succeed
+        expect(results.length).toBe(5)
+
+        // Each vacuum should report reasonable metrics
+        results.forEach(result => {
+          expect(result.durationMs).toBeGreaterThanOrEqual(0)
+          expect(result.filesScanned).toBeGreaterThanOrEqual(0)
+          // filesDeleted might vary depending on race conditions
+          expect(result.filesDeleted).toBeGreaterThanOrEqual(0)
+        })
+
+        // Total deleted should equal number of orphaned files
+        // (files can only be deleted once, subsequent attempts should gracefully handle missing files)
+        const totalDeleted = results.reduce((sum, m) => sum + m.filesDeleted, 0)
+        expect(totalDeleted).toBeGreaterThanOrEqual(20)
+      })
+    })
+
+    describe('vacuum with concurrent deletes', () => {
+      it('should handle delete operations running alongside vacuum', async () => {
+        const table = await createTableWithData(storage, 'test-table', 3)
+        await createOrphanedFiles(storage, 'test-table', 5)
+
+        // Get initial data to delete
+        const initialData = await table.query()
+        const recordToDelete = initialData[0]
+
+        // Run vacuum and delete concurrently
+        const [vacuumResult] = await Promise.allSettled([
+          vacuum(table, { retentionHours: 1 }),
+          table.delete({ id: recordToDelete?.id }),
+        ])
+
+        // Vacuum should complete (might succeed or handle race gracefully)
+        expect(vacuumResult.status).toBe('fulfilled')
+
+        // Table should remain consistent
+        const finalSnapshot = await table.snapshot()
+        expect(finalSnapshot.version).toBeGreaterThanOrEqual(3)
+      })
+
+      it('should not delete files that become orphaned during vacuum scan', async () => {
+        const table = await createTableWithData(storage, 'test-table', 2)
+        await createOrphanedFiles(storage, 'test-table', 3, 200) // Old orphans
+
+        // Get snapshot to identify files
+        const snapshot = await table.snapshot()
+        const activeFilePaths = snapshot.files.map(f => f.path)
+
+        // Run vacuum - active files should be protected
+        const vacuumResult = await vacuum(table, { retentionHours: 1 })
+
+        // Active files from the snapshot should still exist
+        // (vacuum reads snapshot at start and protects those files)
+        for (const path of activeFilePaths) {
+          expect(await storage.exists(path)).toBe(true)
+        }
+
+        expect(vacuumResult.filesRetained).toBeGreaterThan(0)
+      })
+    })
+
+    describe('concurrent vacuum error handling', () => {
+      it('should handle deletion errors gracefully during concurrent vacuum', async () => {
+        const table = await createTableWithData(storage, 'test-table', 1)
+        const orphanedPaths = await createOrphanedFiles(storage, 'test-table', 10)
+
+        // Simulate deletion failures by deleting files before vacuum can
+        const earlyDeletePromise = (async () => {
+          // Delete some orphaned files before vacuum gets to them
+          for (let i = 0; i < 3; i++) {
+            const path = orphanedPaths[i]
+            if (path) {
+              await storage.delete(path)
+            }
+          }
+        })()
+
+        const [vacuumResult] = await Promise.all([
+          vacuum(table, { retentionHours: 1 }),
+          earlyDeletePromise,
+        ])
+
+        // Vacuum should handle missing files gracefully
+        // (might report errors for files that were already deleted)
+        expect(vacuumResult).toBeDefined()
+        expect(vacuumResult.durationMs).toBeGreaterThanOrEqual(0)
+
+        // Remaining orphaned files should be deleted by vacuum
+        for (const path of orphanedPaths) {
+          expect(await storage.exists(path)).toBe(false)
+        }
+      })
+
+      it('should track errors when file deletion fails mid-vacuum', async () => {
+        const table = await createTableWithData(storage, 'test-table', 1)
+        const orphanedPaths = await createOrphanedFiles(storage, 'test-table', 5)
+
+        // Mock delete to fail for specific files
+        const originalDelete = storage.delete.bind(storage)
+        let deleteCallCount = 0
+        storage.delete = async (path: string) => {
+          deleteCallCount++
+          // Fail for the second and third orphaned file
+          if (orphanedPaths.includes(path) && (deleteCallCount === 2 || deleteCallCount === 3)) {
+            throw new Error(`Simulated concurrent deletion failure for ${path}`)
+          }
+          return originalDelete(path)
+        }
+
+        const metrics = await vacuum(table, { retentionHours: 1 })
+
+        // Should have recorded errors
+        expect(metrics.errors).toBeDefined()
+        expect(metrics.errors?.length).toBeGreaterThan(0)
+
+        // Should have successfully deleted other files
+        expect(metrics.filesDeleted).toBeGreaterThan(0)
+
+        // Restore original delete
+        storage.delete = originalDelete
+      })
+
+      it('should continue vacuum after encountering concurrent modification errors', async () => {
+        const table = await createTableWithData(storage, 'test-table', 2)
+        await createOrphanedFiles(storage, 'test-table', 8)
+
+        // Simulate concurrent writes that might cause race conditions
+        const writePromises = Array.from({ length: 3 }, async (_, i) => {
+          await new Promise(resolve => setTimeout(resolve, i * 5))
+          try {
+            await table.write([{ id: `race-write-${i}`, value: i }])
+          } catch {
+            // Ignore write errors - we're testing vacuum resilience
+          }
+        })
+
+        const [vacuumResult] = await Promise.all([
+          vacuum(table, { retentionHours: 1 }),
+          ...writePromises,
+        ])
+
+        // Vacuum should complete despite concurrent activity
+        expect(vacuumResult).toBeDefined()
+        expect(vacuumResult.filesScanned).toBeGreaterThan(0)
+      })
+    })
+
+    describe('vacuum dry-run during concurrent operations', () => {
+      it('should provide accurate preview during concurrent writes', async () => {
+        const table = await createTableWithData(storage, 'test-table', 1)
+        const orphanedPaths = await createOrphanedFiles(storage, 'test-table', 5)
+
+        // Run dry-run vacuum and writes concurrently
+        const [dryRunResult] = await Promise.all([
+          vacuum(table, { retentionHours: 1, dryRun: true }),
+          table.write([{ id: 'concurrent-write', value: 999 }]),
+        ])
+
+        // Dry run should report files that would be deleted
+        expect(dryRunResult.dryRun).toBe(true)
+        expect(dryRunResult.filesToDelete).toBeDefined()
+        expect(dryRunResult.filesDeleted).toBe(5)
+
+        // All orphaned files should still exist (dry run doesn't delete)
+        for (const path of orphanedPaths) {
+          expect(await storage.exists(path)).toBe(true)
+        }
+      })
+
+      it('should allow subsequent real vacuum after dry-run', async () => {
+        const table = await createTableWithData(storage, 'test-table', 1)
+        const orphanedPaths = await createOrphanedFiles(storage, 'test-table', 4)
+
+        // First do a dry run to preview
+        const dryRunResult = await vacuum(table, { retentionHours: 1, dryRun: true })
+        expect(dryRunResult.filesDeleted).toBe(4)
+        expect(dryRunResult.filesToDelete?.length).toBe(4)
+
+        // Then run actual vacuum concurrently with a write
+        const [actualResult] = await Promise.all([
+          vacuum(table, { retentionHours: 1 }),
+          table.write([{ id: 'post-preview-write', value: 1 }]),
+        ])
+
+        // Files should now be actually deleted
+        expect(actualResult.filesDeleted).toBe(4)
+        for (const path of orphanedPaths) {
+          expect(await storage.exists(path)).toBe(false)
+        }
+      })
+    })
+
+    describe('stress testing concurrent vacuum', () => {
+      it('should handle many concurrent vacuum operations without data loss', async () => {
+        const table = await createTableWithData(storage, 'test-table', 5)
+        const orphanedPaths = await createOrphanedFiles(storage, 'test-table', 30)
+
+        // Get initial snapshot to verify data integrity later
+        const initialSnapshot = await table.snapshot()
+        const activeFilePaths = new Set(initialSnapshot.files.map(f => f.path))
+
+        // Run 10 concurrent vacuum operations
+        const vacuumPromises = Array.from({ length: 10 }, () =>
+          vacuum(table, { retentionHours: 1 })
+        )
+
+        const results = await Promise.all(vacuumPromises)
+
+        // All vacuums should complete without throwing
+        expect(results.length).toBe(10)
+
+        // Active files from initial snapshot should still exist
+        for (const path of activeFilePaths) {
+          expect(await storage.exists(path)).toBe(true)
+        }
+
+        // All orphaned files should be deleted
+        for (const path of orphanedPaths) {
+          expect(await storage.exists(path)).toBe(false)
+        }
+      })
+
+      it('should maintain table consistency under concurrent vacuum and write load', async () => {
+        const table = await createTableWithData(storage, 'test-table', 2)
+        await createOrphanedFiles(storage, 'test-table', 20)
+
+        // Mix of vacuum operations and writes
+        // Note: Concurrent writes will conflict (by design in Delta Lake's optimistic concurrency).
+        // We use Promise.allSettled to handle expected concurrency errors gracefully.
+        const operations = [
+          vacuum(table, { retentionHours: 1 }),
+          table.write([{ id: 'stress-1', value: 1 }]),
+          vacuum(table, { retentionHours: 1 }),
+          table.write([{ id: 'stress-2', value: 2 }]),
+          vacuum(table, { retentionHours: 1 }),
+          table.write([{ id: 'stress-3', value: 3 }]),
+          vacuum(table, { retentionHours: 1, dryRun: true }),
+        ]
+
+        const results = await Promise.allSettled(operations)
+
+        // All vacuum operations should succeed (vacuums don't conflict with each other or writes)
+        const vacuumResults = [results[0], results[2], results[4], results[6]]
+        vacuumResults.forEach(result => {
+          expect(result.status).toBe('fulfilled')
+        })
+
+        // At least one write should succeed (concurrent writes may conflict)
+        const writeResults = [results[1], results[3], results[5]]
+        const successfulWrites = writeResults.filter(r => r.status === 'fulfilled')
+        expect(successfulWrites.length).toBeGreaterThanOrEqual(1)
+
+        // Table should be in consistent state regardless of which writes succeeded
+        const finalSnapshot = await table.snapshot()
+        expect(finalSnapshot.version).toBeGreaterThanOrEqual(2)
+
+        // Query should work correctly
+        const queryResult = await table.query()
+        expect(queryResult.length).toBeGreaterThan(0)
+      })
+    })
+  })
 })

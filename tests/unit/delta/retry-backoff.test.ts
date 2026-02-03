@@ -62,15 +62,7 @@ function createAlwaysFailingFn(error: Error): jest.Mock<Promise<never>> {
   })
 }
 
-/**
- * Helper to measure elapsed time of an async operation
- */
-async function measureTime<T>(fn: () => Promise<T>): Promise<{ result: T; elapsedMs: number }> {
-  const start = Date.now()
-  const result = await fn()
-  const elapsedMs = Date.now() - start
-  return { result, elapsedMs }
-}
+// Note: measureTime helper removed - it was unused and relied on real time
 
 /**
  * Helper to capture all delay times during retries
@@ -313,10 +305,16 @@ describe('Jitter', () => {
     expect(delayCapture.delays[1]).toBeLessThanOrEqual(300)
   })
 
-  it('should produce different delays on multiple runs', async () => {
+  it('should produce different delays based on random values', async () => {
+    // Mock Math.random to return predictable but varied values
+    const mockRandom = vi.spyOn(Math, 'random')
+    const randomValues = [0.1, 0.9, 0.5, 0.3, 0.7, 0.2]
+    let randomIndex = 0
+    mockRandom.mockImplementation(() => randomValues[randomIndex++ % randomValues.length])
+
     const results: number[][] = []
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
       const capture = createDelayCapture()
       const fn = createFailingThenSucceedingFn(2, 'success')
 
@@ -330,11 +328,12 @@ describe('Jitter', () => {
       results.push([...capture.delays])
     }
 
-    // Not all results should be identical (with jitter)
-    const allSame = results.every(
-      r => r[0] === results[0][0] && r[1] === results[0][1]
-    )
-    expect(allSame).toBe(false)
+    mockRandom.mockRestore()
+
+    // With mocked random values, we expect predictable variation
+    // Each run uses different random values, so delays should differ
+    expect(results[0]).not.toEqual(results[1])
+    expect(results[1]).not.toEqual(results[2])
   })
 
   it('should not exceed baseDelay * (1 + jitterFactor)', async () => {
@@ -995,37 +994,77 @@ describe('Retry callbacks and hooks', () => {
 // =============================================================================
 
 describe('AbortController support', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('should respect AbortController signal', async () => {
     const controller = new AbortController()
     const fn = createAlwaysFailingFn(new ConcurrencyError('retry'))
 
-    setTimeout(() => controller.abort(), 50)
+    // Use a mock delay function that we can control with fake timers
+    const mockDelay = vi.fn(async (ms: number) => {
+      await new Promise(resolve => setTimeout(resolve, ms))
+    })
 
-    await expect(withRetry(fn, {
+    const promise = withRetry(fn, {
       maxRetries: 10,
       baseDelay: 100,
+      jitter: false,
       signal: controller.signal,
-    })).rejects.toThrow(/abort/i)
+      _delayFn: mockDelay,
+    })
+
+    // Let the first attempt run (it fails)
+    await vi.advanceTimersByTimeAsync(0)
+
+    // Abort during the first delay
+    controller.abort()
+
+    // Advance time so the delay resolves
+    await vi.advanceTimersByTimeAsync(100)
+
+    await expect(promise).rejects.toThrow(/abort/i)
   })
 
-  it('should stop retrying when aborted', async () => {
+  it('should stop retrying when aborted during delay', async () => {
     const controller = new AbortController()
     const fn = vi.fn(async () => {
       throw new ConcurrencyError('retry')
     })
 
+    // Use a mock delay function that checks for abort
+    const mockDelay = vi.fn(async (ms: number) => {
+      await new Promise(resolve => setTimeout(resolve, ms))
+    })
+
     const promise = withRetry(fn, {
       maxRetries: 10,
       baseDelay: 50,
+      jitter: false,
       signal: controller.signal,
+      _delayFn: mockDelay,
     })
 
-    // Abort after a short delay
-    await new Promise(resolve => setTimeout(resolve, 75))
+    // Let the first attempt run and start waiting
+    await vi.advanceTimersByTimeAsync(0)
+
+    // First call should have happened
+    expect(fn).toHaveBeenCalledTimes(1)
+
+    // Abort before the delay completes
     controller.abort()
 
-    await expect(promise).rejects.toThrow()
-    expect(fn.mock.calls.length).toBeLessThan(11) // Should have been stopped
+    // Advance past the delay
+    await vi.advanceTimersByTimeAsync(50)
+
+    await expect(promise).rejects.toThrow(/abort/i)
+    // Should have stopped after first attempt due to abort
+    expect(fn).toHaveBeenCalledTimes(1)
   })
 
   it('should throw AbortError with correct name', async () => {
