@@ -1,0 +1,41 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "deltalake-benchmarks",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // R2 bucket for Delta Lake storage
+  "r2_buckets": [
+    {
+      "binding": "BUCKET",
+      "bucket_name": "deltalake-benchmarks"
+    }
+  ],
+
+  // Environment variables
+  "vars": {
+    "ENVIRONMENT": "development"
+  },
+
+  // Local development
+  "dev": {
+    "port": 8787
+  },
+
+  // Production environment
+  "env": {
+    "production": {
+      "name": "deltalake-benchmarks-prod",
+      "vars": {
+        "ENVIRONMENT": "production"
+      },
+      "r2_buckets": [
+        {
+          "binding": "BUCKET",
+          "bucket_name": "deltalake-benchmarks-prod"
+        }
+      ]
+    }
+  }
+}
