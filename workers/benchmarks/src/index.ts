@@ -153,8 +153,11 @@ function generateClickBenchHit(index: number): ClickBenchHit {
 // STORAGE
 // =============================================================================
 
+// Prefix for all benchmark data in the shared cdn bucket
+const BENCHMARK_PREFIX = 'deltalake-benchmarks'
+
 function createR2Storage(bucket: R2Bucket): R2Storage {
-  return new R2Storage(bucket)
+  return new R2Storage({ bucket, prefix: BENCHMARK_PREFIX })
 }
 
 // =============================================================================
@@ -423,8 +426,8 @@ async function handleBenchmark(
   const url = new URL(request.url)
 
   // GET /benchmark/ingest/{implementation}?count=1000&batchSize=100
-  if (path[2] === 'ingest') {
-    const implementation = path[3] as 'mongolake' | 'kafkalake' | 'parquedb'
+  if (path[1] === 'ingest') {
+    const implementation = path[2] as 'mongolake' | 'kafkalake' | 'parquedb'
     const count = parseInt(url.searchParams.get('count') ?? '1000')
     const batchSize = parseInt(url.searchParams.get('batchSize') ?? '100')
     const tableName = `clickbench-${Date.now()}`
@@ -480,8 +483,8 @@ async function handleBenchmark(
   }
 
   // GET /benchmark/query/{implementation}?table=xxx
-  if (path[2] === 'query') {
-    const implementation = path[3] as 'mongolake' | 'kafkalake' | 'parquedb'
+  if (path[1] === 'query') {
+    const implementation = path[2] as 'mongolake' | 'kafkalake' | 'parquedb'
     const tableName = url.searchParams.get('table')
     if (!tableName) {
       return jsonResponse({ error: 'table parameter required' }, 400)
@@ -531,7 +534,7 @@ async function handleBenchmark(
   }
 
   // GET /benchmark/compare/ingest?count=1000&batchSize=100
-  if (path[2] === 'compare' && path[3] === 'ingest') {
+  if (path[1] === 'compare' && path[2] === 'ingest') {
     const count = parseInt(url.searchParams.get('count') ?? '1000')
     const batchSize = parseInt(url.searchParams.get('batchSize') ?? '100')
 

@@ -36,8 +36,9 @@ import { type Lock, acquireWriteLock, releaseWriteLock } from './utils.js'
  */
 export class R2Storage implements StorageBackend {
   private writeLocks = new Map<string, Lock>()
+  private prefix: string
 
-  constructor(private options: { bucket: R2Bucket }) {
+  constructor(private options: { bucket: R2Bucket; prefix?: string }) {
     // Validate options
     if (!options || typeof options !== 'object') {
       throw new ValidationError('options is required and must be an object', 'options', options)
@@ -58,10 +59,18 @@ export class R2Storage implements StorageBackend {
         options.bucket
       )
     }
+
+    // Normalize prefix (ensure it ends with / if provided)
+    this.prefix = options.prefix ? (options.prefix.endsWith('/') ? options.prefix : options.prefix + '/') : ''
+  }
+
+  private prefixPath(path: string): string {
+    return this.prefix + path
   }
 
   async read(path: string): Promise<Uint8Array> {
-    const object = await this.options.bucket.get(path)
+    const fullPath = this.prefixPath(path)
+    const object = await this.options.bucket.get(fullPath)
     if (!object) {
       throw new FileNotFoundError(path, 'read')
     }
@@ -70,21 +79,25 @@ export class R2Storage implements StorageBackend {
   }
 
   async write(path: string, data: Uint8Array): Promise<void> {
-    await this.options.bucket.put(path, data)
+    await this.options.bucket.put(this.prefixPath(path), data)
   }
 
   async list(prefix: string): Promise<string[]> {
     const results: string[] = []
     let cursor: string | undefined = undefined
     let truncated = true
+    const fullPrefix = this.prefixPath(prefix)
 
     while (truncated) {
       const response = await this.options.bucket.list({
-        prefix,
+        prefix: fullPrefix,
         ...(cursor ? { cursor } : {}),
       })
 
-      results.push(...response.objects.map(obj => obj.key))
+      // Strip the storage prefix from returned keys
+      results.push(...response.objects.map(obj =>
+        this.prefix ? obj.key.slice(this.prefix.length) : obj.key
+      ))
       truncated = response.truncated
       if (response.truncated) {
         cursor = response.cursor
@@ -95,16 +108,16 @@ export class R2Storage implements StorageBackend {
   }
 
   async delete(path: string): Promise<void> {
-    await this.options.bucket.delete(path)
+    await this.options.bucket.delete(this.prefixPath(path))
   }
 
   async exists(path: string): Promise<boolean> {
-    const object = await this.options.bucket.head(path)
+    const object = await this.options.bucket.head(this.prefixPath(path))
     return object !== null
   }
 
   async stat(path: string): Promise<FileStat | null> {
-    const object = await this.options.bucket.head(path)
+    const object = await this.options.bucket.head(this.prefixPath(path))
     if (!object) {
       return null
     }
@@ -116,8 +129,9 @@ export class R2Storage implements StorageBackend {
   }
 
   async readRange(path: string, start: number, end: number): Promise<Uint8Array> {
+    const fullPath = this.prefixPath(path)
     const length = end - start
-    const object = await this.options.bucket.get(path, {
+    const object = await this.options.bucket.get(fullPath, {
       range: { offset: start, length },
     })
     if (!object) {
@@ -128,7 +142,7 @@ export class R2Storage implements StorageBackend {
   }
 
   async getVersion(path: string): Promise<string | null> {
-    const object = await this.options.bucket.head(path)
+    const object = await this.options.bucket.head(this.prefixPath(path))
     if (!object) {
       return null
     }
@@ -136,8 +150,9 @@ export class R2Storage implements StorageBackend {
   }
 
   async writeConditional(path: string, data: Uint8Array, expectedVersion: string | null): Promise<string> {
+    const fullPath = this.prefixPath(path)
     // Acquire lock for this path - properly handles concurrent access
-    const lock = await acquireWriteLock(this.writeLocks, path)
+    const lock = await acquireWriteLock(this.writeLocks, fullPath)
 
     try {
       // Check current version from R2
@@ -156,13 +171,13 @@ export class R2Storage implements StorageBackend {
       }
 
       // Version matches, perform the write
-      await this.options.bucket.put(path, data)
+      await this.options.bucket.put(fullPath, data)
 
       // Get the new version (ETag) after write
       const newVersion = await this.getVersion(path)
       return newVersion ?? ''
     } finally {
-      releaseWriteLock(this.writeLocks, path, lock)
+      releaseWriteLock(this.writeLocks, fullPath, lock)
     }
   }
 }
