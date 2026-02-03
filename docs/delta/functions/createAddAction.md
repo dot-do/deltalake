@@ -6,9 +6,9 @@
 
 # Function: createAddAction()
 
-> **createAddAction**(`params`): [`AddAction`](../interfaces/AddAction.md)
+> **createAddAction**(`params`): [`AddAction`](../../index/interfaces/AddAction.md)
 
-Defined in: src/delta/index.ts:3577
+Defined in: [src/delta/index.ts:865](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L865)
 
 Create an AddAction with validation
 
@@ -38,7 +38,7 @@ Create an AddAction with validation
 
 #### stats?
 
-[`FileStats`](../interfaces/FileStats.md)
+[`FileStats`](../../index/interfaces/FileStats.md)
 
 #### tags?
 
@@ -46,4 +46,4 @@ Create an AddAction with validation
 
 ## Returns
 
-[`AddAction`](../interfaces/AddAction.md)
+[`AddAction`](../../index/interfaces/AddAction.md)

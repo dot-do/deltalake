@@ -6,7 +6,7 @@
 
 # Interface: ConcurrencyErrorOptions
 
-Defined in: src/errors.ts:171
+Defined in: [src/errors.ts:183](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L183)
 
 Options for creating a ConcurrencyError with version information.
 
@@ -16,7 +16,7 @@ Options for creating a ConcurrencyError with version information.
 
 > `optional` **expectedVersion**: `number`
 
-Defined in: src/errors.ts:173
+Defined in: [src/errors.ts:185](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L185)
 
 The expected version (what the writer thought the version was)
 
@@ -26,6 +26,6 @@ The expected version (what the writer thought the version was)
 
 > `optional` **actualVersion**: `number`
 
-Defined in: src/errors.ts:175
+Defined in: [src/errors.ts:187](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L187)
 
 The actual version found (current version in storage)

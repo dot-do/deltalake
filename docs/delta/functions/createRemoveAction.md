@@ -6,9 +6,9 @@
 
 # Function: createRemoveAction()
 
-> **createRemoveAction**(`params`): [`RemoveAction`](../interfaces/RemoveAction.md)
+> **createRemoveAction**(`params`): [`RemoveAction`](../../index/interfaces/RemoveAction.md)
 
-Defined in: src/delta/index.ts:3652
+Defined in: [src/delta/index.ts:940](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L940)
 
 Create a RemoveAction with validation
 
@@ -42,4 +42,4 @@ Create a RemoveAction with validation
 
 ## Returns
 
-[`RemoveAction`](../interfaces/RemoveAction.md)
+[`RemoveAction`](../../index/interfaces/RemoveAction.md)

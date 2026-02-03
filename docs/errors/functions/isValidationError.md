@@ -8,7 +8,7 @@
 
 > **isValidationError**(`error`): `error is ValidationError`
 
-Defined in: src/errors.ts:356
+Defined in: [src/errors.ts:386](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L386)
 
 Check if an error is a ValidationError.
 

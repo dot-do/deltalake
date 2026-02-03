@@ -6,7 +6,7 @@
 
 # Interface: ColumnStats
 
-Defined in: src/parquet/streaming-writer.ts:100
+Defined in: [src/parquet/streaming-writer.ts:113](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L113)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: src/parquet/streaming-writer.ts:100
 
 > **min**: [`ColumnStatValue`](../type-aliases/ColumnStatValue.md)
 
-Defined in: src/parquet/streaming-writer.ts:101
+Defined in: [src/parquet/streaming-writer.ts:114](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L114)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: src/parquet/streaming-writer.ts:101
 
 > **max**: [`ColumnStatValue`](../type-aliases/ColumnStatValue.md)
 
-Defined in: src/parquet/streaming-writer.ts:102
+Defined in: [src/parquet/streaming-writer.ts:115](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L115)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: src/parquet/streaming-writer.ts:102
 
 > **nullCount**: `number`
 
-Defined in: src/parquet/streaming-writer.ts:103
+Defined in: [src/parquet/streaming-writer.ts:116](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L116)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: src/parquet/streaming-writer.ts:103
 
 > `optional` **distinctCount**: `number`
 
-Defined in: src/parquet/streaming-writer.ts:104
+Defined in: [src/parquet/streaming-writer.ts:117](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L117)

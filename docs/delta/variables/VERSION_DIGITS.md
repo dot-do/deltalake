@@ -8,6 +8,6 @@
 
 > `const` **VERSION\_DIGITS**: `20` = `SHARED_VERSION_DIGITS`
 
-Defined in: src/delta/index.ts:50
+Defined in: [src/delta/index.ts:127](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L127)
 
 Number of digits in version filename (padded with zeros)

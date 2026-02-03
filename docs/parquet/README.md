@@ -74,9 +74,3 @@ Re-exports [AsyncBuffer](../storage/interfaces/AsyncBuffer.md)
 ### createAsyncBuffer
 
 Re-exports [createAsyncBuffer](../storage/functions/createAsyncBuffer.md)
-
-***
-
-### default
-
-Renames and re-exports [ParquetMetadata](interfaces/ParquetMetadata.md)

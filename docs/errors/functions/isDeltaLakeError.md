@@ -8,7 +8,7 @@
 
 > **isDeltaLakeError**(`error`): `error is DeltaLakeError`
 
-Defined in: src/errors.ts:328
+Defined in: [src/errors.ts:350](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L350)
 
 Check if an error is a DeltaLakeError.
 

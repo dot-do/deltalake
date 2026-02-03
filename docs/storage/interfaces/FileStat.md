@@ -6,7 +6,7 @@
 
 # Interface: FileStat
 
-Defined in: src/storage/index.ts:314
+Defined in: [src/storage/index.ts:377](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L377)
 
 File metadata returned by stat().
 
@@ -16,7 +16,7 @@ File metadata returned by stat().
 
 > **size**: `number`
 
-Defined in: src/storage/index.ts:316
+Defined in: [src/storage/index.ts:379](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L379)
 
 File size in bytes
 
@@ -26,7 +26,7 @@ File size in bytes
 
 > **lastModified**: `Date`
 
-Defined in: src/storage/index.ts:319
+Defined in: [src/storage/index.ts:382](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L382)
 
 Last modification time
 
@@ -36,6 +36,6 @@ Last modification time
 
 > `optional` **etag**: `string`
 
-Defined in: src/storage/index.ts:322
+Defined in: [src/storage/index.ts:385](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L385)
 
 Optional ETag/version identifier (present for R2/S3)

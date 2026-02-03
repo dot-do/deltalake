@@ -8,6 +8,6 @@
 
 > **MemoryStorageOperation** = `"read"` \| `"write"` \| `"delete"` \| `"list"` \| `"exists"` \| `"stat"` \| `"readRange"`
 
-Defined in: src/storage/index.ts:1750
+Defined in: [src/storage/index.ts:1996](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1996)
 
 Supported operation types for tracking.

@@ -6,7 +6,7 @@
 
 # Interface: CDCSource
 
-Defined in: src/cdc/index.ts:69
+Defined in: [src/cdc/index.ts:78](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L78)
 
 Source metadata for CDC records.
 Identifies the origin system and location of the change.
@@ -17,7 +17,7 @@ Identifies the origin system and location of the change.
 
 > **system**: `"mongolake"` \| `"kafkalake"` \| `"postgres"` \| `"mysql"` \| `"debezium"` \| `"deltalake"`
 
-Defined in: src/cdc/index.ts:71
+Defined in: [src/cdc/index.ts:80](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L80)
 
 Source system identifier
 
@@ -27,7 +27,7 @@ Source system identifier
 
 > `optional` **database**: `string`
 
-Defined in: src/cdc/index.ts:74
+Defined in: [src/cdc/index.ts:83](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L83)
 
 Database name
 
@@ -37,7 +37,7 @@ Database name
 
 > `optional` **collection**: `string`
 
-Defined in: src/cdc/index.ts:77
+Defined in: [src/cdc/index.ts:86](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L86)
 
 Collection/table/topic name
 
@@ -47,7 +47,7 @@ Collection/table/topic name
 
 > `optional` **partition**: `number`
 
-Defined in: src/cdc/index.ts:80
+Defined in: [src/cdc/index.ts:89](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L89)
 
 Partition/shard ID
 
@@ -57,6 +57,6 @@ Partition/shard ID
 
 > `optional` **serverId**: `string`
 
-Defined in: src/cdc/index.ts:83
+Defined in: [src/cdc/index.ts:92](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L92)
 
 Server ID (for multi-master replication)

@@ -6,7 +6,7 @@
 
 # Interface: StorageBackend
 
-Defined in: src/storage/index.ts:216
+Defined in: [src/storage/index.ts:269](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L269)
 
 Core storage backend interface.
 
@@ -30,13 +30,30 @@ this interface to ensure consistent behavior across environments.
 - `writeConditional()` - Atomic write with version check
 - `getVersion()` - Get current file version
 
+## Concurrency Limitations
+
+The write locks used by `writeConditional()` are **process-local only**.
+They prevent concurrent writes within a single Node.js process or Worker
+instance, but provide NO coordination across distributed deployments.
+
+For multi-instance deployments (multiple Workers, multiple processes,
+multiple servers), you should either:
+- Use external distributed locking (Redis, DynamoDB, etc.)
+- Rely on storage-level conditional writes (note: check-then-write is not
+  atomic across the network)
+- Design for single-writer access per table
+
+The ETag/version-based conditional writes provide **optimistic concurrency
+control** - they will detect and reject conflicting writes, but the
+check-and-write is not atomic for cloud storage backends.
+
 ## Methods
 
 ### read()
 
 > **read**(`path`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Defined in: src/storage/index.ts:224
+Defined in: [src/storage/index.ts:277](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L277)
 
 Read the entire contents of a file.
 
@@ -64,7 +81,7 @@ If file does not exist
 
 > **write**(`path`, `data`): `Promise`\<`void`\>
 
-Defined in: src/storage/index.ts:233
+Defined in: [src/storage/index.ts:286](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L286)
 
 Write data to a file, creating it if it doesn't exist or overwriting if it does.
 
@@ -94,7 +111,7 @@ Promise that resolves when write is complete
 
 > **list**(`prefix`): `Promise`\<`string`[]\>
 
-Defined in: src/storage/index.ts:241
+Defined in: [src/storage/index.ts:294](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L294)
 
 List all files matching a prefix.
 
@@ -118,7 +135,7 @@ Promise resolving to array of file paths (not directories)
 
 > **delete**(`path`): `Promise`\<`void`\>
 
-Defined in: src/storage/index.ts:250
+Defined in: [src/storage/index.ts:303](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L303)
 
 Delete a file. This operation is idempotent - deleting a non-existent file
 does not throw an error.
@@ -143,7 +160,7 @@ Promise that resolves when delete is complete
 
 > **exists**(`path`): `Promise`\<`boolean`\>
 
-Defined in: src/storage/index.ts:258
+Defined in: [src/storage/index.ts:311](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L311)
 
 Check if a file exists.
 
@@ -167,7 +184,7 @@ Promise resolving to true if file exists, false otherwise
 
 > **stat**(`path`): `Promise`\<[`FileStat`](FileStat.md) \| `null`\>
 
-Defined in: src/storage/index.ts:266
+Defined in: [src/storage/index.ts:319](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L319)
 
 Get file metadata (size, last modified time, optional etag).
 
@@ -191,7 +208,7 @@ Promise resolving to FileStat or null if file doesn't exist
 
 > **readRange**(`path`, `start`, `end`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Defined in: src/storage/index.ts:278
+Defined in: [src/storage/index.ts:331](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L331)
 
 Read a byte range from a file. Essential for efficient Parquet file reading
 where metadata is stored at the end of the file.
@@ -232,7 +249,7 @@ If file does not exist
 
 > **writeConditional**(`path`, `data`, `expectedVersion`): `Promise`\<`string`\>
 
-Defined in: src/storage/index.ts:294
+Defined in: [src/storage/index.ts:355](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L355)
 
 Conditionally write a file only if the version matches.
 This enables optimistic concurrency control for Delta Lake transactions.
@@ -240,6 +257,14 @@ This enables optimistic concurrency control for Delta Lake transactions.
 Use cases:
 - `expectedVersion = null`: Create file only if it doesn't exist
 - `expectedVersion = "version"`: Update file only if version matches
+
+## Concurrency Note
+
+The internal write locks are **process-local only**. For distributed
+deployments, concurrent writes from different processes/instances may
+result in VersionMismatchError when the version check fails. This is
+the expected behavior for optimistic concurrency control - callers
+should retry with the new version on conflict.
 
 #### Parameters
 
@@ -277,7 +302,7 @@ If the current version doesn't match expected
 
 > **getVersion**(`path`): `Promise`\<`string` \| `null`\>
 
-Defined in: src/storage/index.ts:308
+Defined in: [src/storage/index.ts:369](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L369)
 
 Get the current version of a file.
 

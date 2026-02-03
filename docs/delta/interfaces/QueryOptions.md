@@ -6,7 +6,7 @@
 
 # Interface: QueryOptions\<T\>
 
-Defined in: src/delta/index.ts:775
+Defined in: [src/delta/types.ts:178](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L178)
 
 ## Type Parameters
 
@@ -18,9 +18,9 @@ Defined in: src/delta/index.ts:775
 
 ### version?
 
-> `optional` **version**: `number`
+> `readonly` `optional` **version**: `number`
 
-Defined in: src/delta/index.ts:780
+Defined in: [src/delta/types.ts:183](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L183)
 
 Query at a specific table version (time travel)
 If provided, the query will use the snapshot at this version
@@ -29,9 +29,9 @@ If provided, the query will use the snapshot at this version
 
 ### snapshot?
 
-> `optional` **snapshot**: [`DeltaSnapshot`](DeltaSnapshot.md)
+> `readonly` `optional` **snapshot**: [`DeltaSnapshot`](../../index/interfaces/DeltaSnapshot.md)
 
-Defined in: src/delta/index.ts:785
+Defined in: [src/delta/types.ts:188](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L188)
 
 Use a pre-fetched snapshot for the query
 Useful for consistent reads across multiple queries
@@ -40,9 +40,9 @@ Useful for consistent reads across multiple queries
 
 ### projection?
 
-> `optional` **projection**: [`Projection`](../../query/type-aliases/Projection.md)\<`T`\>
+> `readonly` `optional` **projection**: [`Projection`](../../query/type-aliases/Projection.md)\<`T`\>
 
-Defined in: src/delta/index.ts:793
+Defined in: [src/delta/types.ts:196](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L196)
 
 Field projection to return only specified fields
 - Array format: ['name', 'age'] - include only these fields

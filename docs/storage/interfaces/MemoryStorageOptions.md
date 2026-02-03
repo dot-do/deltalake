@@ -6,7 +6,7 @@
 
 # Interface: MemoryStorageOptions
 
-Defined in: src/storage/index.ts:1769
+Defined in: [src/storage/index.ts:2019](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2019)
 
 Configuration options for MemoryStorage testing utilities.
 
@@ -16,7 +16,7 @@ Configuration options for MemoryStorage testing utilities.
 
 > `readonly` `optional` **latency**: [`LatencyConfig`](LatencyConfig.md)
 
-Defined in: src/storage/index.ts:1771
+Defined in: [src/storage/index.ts:2021](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2021)
 
 Optional simulated latency for operations in milliseconds
 
@@ -26,6 +26,6 @@ Optional simulated latency for operations in milliseconds
 
 > `readonly` `optional` **maxSize**: `number`
 
-Defined in: src/storage/index.ts:1773
+Defined in: [src/storage/index.ts:2023](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2023)
 
 Optional maximum storage size in bytes

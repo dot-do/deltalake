@@ -8,7 +8,7 @@
 
 > `const` **DEFAULT\_RETRY\_CONFIG**: `object`
 
-Defined in: src/delta/retry.ts:128
+Defined in: [src/delta/retry.ts:128](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L128)
 
 Default retry configuration values
 

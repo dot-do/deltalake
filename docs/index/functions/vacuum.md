@@ -8,7 +8,7 @@
 
 > **vacuum**(`table`, `config?`): `Promise`\<[`VacuumMetrics`](../interfaces/VacuumMetrics.md)\>
 
-Defined in: src/delta/vacuum.ts:125
+Defined in: [src/delta/vacuum.ts:127](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/vacuum.ts#L127)
 
 Perform a VACUUM operation on a Delta table.
 
@@ -20,7 +20,7 @@ Removes orphaned files that are:
 
 ### table
 
-[`DeltaTable`](../../delta/classes/DeltaTable.md)
+[`DeltaTable`](../classes/DeltaTable.md)
 
 The DeltaTable to vacuum
 

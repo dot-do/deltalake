@@ -8,7 +8,7 @@
 
 > **getDeletionVectorPath**(`tablePath`, `dv`): `string`
 
-Defined in: src/delta/index.ts:177
+Defined in: [src/delta/index.ts:225](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L225)
 
 Get the file path for a deletion vector based on its descriptor.
 

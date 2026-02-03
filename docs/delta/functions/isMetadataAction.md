@@ -8,7 +8,7 @@
 
 > **isMetadataAction**(`action`): `action is MetadataAction`
 
-Defined in: src/delta/index.ts:3710
+Defined in: [src/delta/validators.ts:139](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/validators.ts#L139)
 
 Type guard for MetadataAction
 

@@ -6,7 +6,7 @@
 
 # Class: MemoryStorage
 
-Defined in: src/storage/index.ts:1831
+Defined in: [src/storage/index.ts:2087](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2087)
 
 In-memory storage backend for testing.
 
@@ -47,7 +47,7 @@ const data = await storage.read('test.txt')
 
 > **new MemoryStorage**(`options`): `MemoryStorage`
 
-Defined in: src/storage/index.ts:1848
+Defined in: [src/storage/index.ts:2107](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2107)
 
 #### Parameters
 
@@ -65,7 +65,7 @@ Defined in: src/storage/index.ts:1848
 
 > **read**(`path`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Defined in: src/storage/index.ts:1856
+Defined in: [src/storage/index.ts:2149](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2149)
 
 Read the entire contents of a file.
 
@@ -97,7 +97,7 @@ If file does not exist
 
 > **write**(`path`, `data`): `Promise`\<`void`\>
 
-Defined in: src/storage/index.ts:1869
+Defined in: [src/storage/index.ts:2162](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2162)
 
 Write data to a file, creating it if it doesn't exist or overwriting if it does.
 
@@ -131,7 +131,7 @@ Promise that resolves when write is complete
 
 > **list**(`prefix`): `Promise`\<`string`[]\>
 
-Defined in: src/storage/index.ts:1881
+Defined in: [src/storage/index.ts:2174](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2174)
 
 List all files matching a prefix.
 
@@ -159,7 +159,7 @@ Promise resolving to array of file paths (not directories)
 
 > **delete**(`path`): `Promise`\<`void`\>
 
-Defined in: src/storage/index.ts:1894
+Defined in: [src/storage/index.ts:2187](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2187)
 
 Delete a file. This operation is idempotent - deleting a non-existent file
 does not throw an error.
@@ -188,7 +188,7 @@ Promise that resolves when delete is complete
 
 > **exists**(`path`): `Promise`\<`boolean`\>
 
-Defined in: src/storage/index.ts:1904
+Defined in: [src/storage/index.ts:2197](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2197)
 
 Check if a file exists.
 
@@ -216,7 +216,7 @@ Promise resolving to true if file exists, false otherwise
 
 > **stat**(`path`): `Promise`\<[`FileStat`](../interfaces/FileStat.md) \| `null`\>
 
-Defined in: src/storage/index.ts:1909
+Defined in: [src/storage/index.ts:2202](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2202)
 
 Get file metadata (size, last modified time, optional etag).
 
@@ -244,7 +244,7 @@ Promise resolving to FileStat or null if file doesn't exist
 
 > **readRange**(`path`, `start`, `end`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Defined in: src/storage/index.ts:1923
+Defined in: [src/storage/index.ts:2216](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2216)
 
 Read a byte range from a file. Essential for efficient Parquet file reading
 where metadata is stored at the end of the file.
@@ -289,7 +289,7 @@ If file does not exist
 
 > **getVersion**(`path`): `Promise`\<`string` \| `null`\>
 
-Defined in: src/storage/index.ts:1936
+Defined in: [src/storage/index.ts:2229](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2229)
 
 Get the current version of a file.
 
@@ -323,7 +323,7 @@ Promise resolving to version string, or null if file doesn't exist
 
 > **writeConditional**(`path`, `data`, `expectedVersion`): `Promise`\<`string`\>
 
-Defined in: src/storage/index.ts:1940
+Defined in: [src/storage/index.ts:2233](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2233)
 
 Conditionally write a file only if the version matches.
 This enables optimistic concurrency control for Delta Lake transactions.
@@ -331,6 +331,14 @@ This enables optimistic concurrency control for Delta Lake transactions.
 Use cases:
 - `expectedVersion = null`: Create file only if it doesn't exist
 - `expectedVersion = "version"`: Update file only if version matches
+
+## Concurrency Note
+
+The internal write locks are **process-local only**. For distributed
+deployments, concurrent writes from different processes/instances may
+result in VersionMismatchError when the version check fails. This is
+the expected behavior for optimistic concurrency control - callers
+should retry with the new version on conflict.
 
 #### Parameters
 
@@ -372,7 +380,7 @@ If the current version doesn't match expected
 
 > **snapshot**(): [`StorageSnapshot`](../interfaces/StorageSnapshot.md)
 
-Defined in: src/storage/index.ts:1960
+Defined in: [src/storage/index.ts:2253](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2253)
 
 Create a snapshot of the current storage state.
 Useful for saving state before a test and restoring after.
@@ -387,7 +395,7 @@ Useful for saving state before a test and restoring after.
 
 > **restore**(`snapshot`): `void`
 
-Defined in: src/storage/index.ts:1976
+Defined in: [src/storage/index.ts:2269](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2269)
 
 Restore storage to a previously captured snapshot.
 
@@ -407,7 +415,7 @@ Restore storage to a previously captured snapshot.
 
 > **clear**(): `void`
 
-Defined in: src/storage/index.ts:1994
+Defined in: [src/storage/index.ts:2287](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2287)
 
 Clear all files from storage.
 
@@ -421,7 +429,7 @@ Clear all files from storage.
 
 > **getOperationHistory**(): readonly [`OperationRecord`](../interfaces/OperationRecord.md)[]
 
-Defined in: src/storage/index.ts:2009
+Defined in: [src/storage/index.ts:2308](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2308)
 
 Get the history of operations performed on this storage.
 Returns a copy to prevent external mutation.
@@ -436,7 +444,7 @@ readonly [`OperationRecord`](../interfaces/OperationRecord.md)[]
 
 > **clearOperationHistory**(): `void`
 
-Defined in: src/storage/index.ts:2016
+Defined in: [src/storage/index.ts:2315](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2315)
 
 Clear the operation history.
 
@@ -450,7 +458,7 @@ Clear the operation history.
 
 > **getUsedSize**(): `number`
 
-Defined in: src/storage/index.ts:2027
+Defined in: [src/storage/index.ts:2326](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2326)
 
 Get the current used storage size in bytes.
 
@@ -464,7 +472,7 @@ Get the current used storage size in bytes.
 
 > **getMaxSize**(): `number` \| `undefined`
 
-Defined in: src/storage/index.ts:2034
+Defined in: [src/storage/index.ts:2333](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2333)
 
 Get the maximum storage size (if configured).
 
@@ -478,7 +486,7 @@ Get the maximum storage size (if configured).
 
 > **getAvailableSize**(): `number`
 
-Defined in: src/storage/index.ts:2042
+Defined in: [src/storage/index.ts:2341](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2341)
 
 Get the available storage size (maxSize - usedSize).
 Returns Infinity if no maxSize is configured.
@@ -493,7 +501,7 @@ Returns Infinity if no maxSize is configured.
 
 > **getFileCount**(): `number`
 
-Defined in: src/storage/index.ts:2052
+Defined in: [src/storage/index.ts:2351](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2351)
 
 Get the total number of files stored.
 
@@ -507,7 +515,7 @@ Get the total number of files stored.
 
 > **setFileTimestamp**(`path`, `timestamp`): `void`
 
-Defined in: src/storage/index.ts:2068
+Defined in: [src/storage/index.ts:2367](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2367)
 
 Set the timestamp for a file (testing utility).
 Useful for testing time-based operations like vacuum retention.
@@ -540,7 +548,7 @@ Error if the file does not exist
 
 > **getFileTimestamp**(`path`): `Date` \| `undefined`
 
-Defined in: src/storage/index.ts:2081
+Defined in: [src/storage/index.ts:2380](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2380)
 
 Get the timestamp for a file (testing utility).
 

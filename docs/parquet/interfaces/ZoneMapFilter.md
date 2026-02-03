@@ -6,7 +6,7 @@
 
 # Interface: ZoneMapFilter
 
-Defined in: src/parquet/index.ts:112
+Defined in: [src/parquet/index.ts:110](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L110)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: src/parquet/index.ts:112
 
 > **column**: `string`
 
-Defined in: src/parquet/index.ts:113
+Defined in: [src/parquet/index.ts:111](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L111)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: src/parquet/index.ts:113
 
 > **operator**: `"eq"` \| `"ne"` \| `"gt"` \| `"gte"` \| `"lt"` \| `"lte"` \| `"in"` \| `"between"`
 
-Defined in: src/parquet/index.ts:114
+Defined in: [src/parquet/index.ts:112](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L112)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: src/parquet/index.ts:114
 
 > **value**: `unknown`
 
-Defined in: src/parquet/index.ts:115
+Defined in: [src/parquet/index.ts:113](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L113)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: src/parquet/index.ts:115
 
 > `optional` **value2**: `unknown`
 
-Defined in: src/parquet/index.ts:116
+Defined in: [src/parquet/index.ts:114](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L114)

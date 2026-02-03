@@ -6,7 +6,7 @@
 
 # Interface: RetryConfig
 
-Defined in: src/delta/retry.ts:77
+Defined in: [src/delta/retry.ts:77](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L77)
 
 Configuration options for retry behavior
 
@@ -14,9 +14,9 @@ Configuration options for retry behavior
 
 ### maxRetries?
 
-> `optional` **maxRetries**: `number`
+> `readonly` `optional` **maxRetries**: `number`
 
-Defined in: src/delta/retry.ts:79
+Defined in: [src/delta/retry.ts:79](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L79)
 
 Maximum number of retry attempts (default: 3)
 
@@ -24,9 +24,9 @@ Maximum number of retry attempts (default: 3)
 
 ### baseDelay?
 
-> `optional` **baseDelay**: `number`
+> `readonly` `optional` **baseDelay**: `number`
 
-Defined in: src/delta/retry.ts:81
+Defined in: [src/delta/retry.ts:81](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L81)
 
 Base delay in milliseconds (default: 100)
 
@@ -34,9 +34,9 @@ Base delay in milliseconds (default: 100)
 
 ### maxDelay?
 
-> `optional` **maxDelay**: `number`
+> `readonly` `optional` **maxDelay**: `number`
 
-Defined in: src/delta/retry.ts:83
+Defined in: [src/delta/retry.ts:83](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L83)
 
 Maximum delay in milliseconds (default: 10000)
 
@@ -44,9 +44,9 @@ Maximum delay in milliseconds (default: 10000)
 
 ### multiplier?
 
-> `optional` **multiplier**: `number`
+> `readonly` `optional` **multiplier**: `number`
 
-Defined in: src/delta/retry.ts:85
+Defined in: [src/delta/retry.ts:85](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L85)
 
 Multiplier for exponential backoff (default: 2)
 
@@ -54,9 +54,9 @@ Multiplier for exponential backoff (default: 2)
 
 ### jitter?
 
-> `optional` **jitter**: `boolean`
+> `readonly` `optional` **jitter**: `boolean`
 
-Defined in: src/delta/retry.ts:87
+Defined in: [src/delta/retry.ts:87](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L87)
 
 Whether to add random jitter to delays (default: true)
 
@@ -64,9 +64,9 @@ Whether to add random jitter to delays (default: true)
 
 ### jitterFactor?
 
-> `optional` **jitterFactor**: `number`
+> `readonly` `optional` **jitterFactor**: `number`
 
-Defined in: src/delta/retry.ts:89
+Defined in: [src/delta/retry.ts:89](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L89)
 
 Jitter factor (default: 0.5, meaning +/- 50%)
 
@@ -74,9 +74,9 @@ Jitter factor (default: 0.5, meaning +/- 50%)
 
 ### isRetryable()?
 
-> `optional` **isRetryable**: (`error`) => `boolean`
+> `readonly` `optional` **isRetryable**: (`error`) => `boolean`
 
-Defined in: src/delta/retry.ts:91
+Defined in: [src/delta/retry.ts:91](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L91)
 
 Custom predicate to determine if error is retryable
 
@@ -94,9 +94,9 @@ Custom predicate to determine if error is retryable
 
 ### onRetry()?
 
-> `optional` **onRetry**: (`info`) => `boolean` \| `void`
+> `readonly` `optional` **onRetry**: (`info`) => `boolean` \| `void`
 
-Defined in: src/delta/retry.ts:93
+Defined in: [src/delta/retry.ts:93](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L93)
 
 Called before each retry attempt. Return false to abort retries.
 
@@ -114,9 +114,9 @@ Called before each retry attempt. Return false to abort retries.
 
 ### onSuccess()?
 
-> `optional` **onSuccess**: (`info`) => `void`
+> `readonly` `optional` **onSuccess**: (`info`) => `void`
 
-Defined in: src/delta/retry.ts:95
+Defined in: [src/delta/retry.ts:95](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L95)
 
 Called on successful completion
 
@@ -134,9 +134,9 @@ Called on successful completion
 
 ### onFailure()?
 
-> `optional` **onFailure**: (`info`) => `void`
+> `readonly` `optional` **onFailure**: (`info`) => `void`
 
-Defined in: src/delta/retry.ts:97
+Defined in: [src/delta/retry.ts:97](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L97)
 
 Called when all retries are exhausted
 
@@ -154,9 +154,9 @@ Called when all retries are exhausted
 
 ### returnMetrics?
 
-> `optional` **returnMetrics**: `boolean`
+> `readonly` `optional` **returnMetrics**: `boolean`
 
-Defined in: src/delta/retry.ts:99
+Defined in: [src/delta/retry.ts:99](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L99)
 
 Whether to return metrics with result
 
@@ -164,8 +164,8 @@ Whether to return metrics with result
 
 ### signal?
 
-> `optional` **signal**: `AbortSignal`
+> `readonly` `optional` **signal**: `AbortSignal`
 
-Defined in: src/delta/retry.ts:101
+Defined in: [src/delta/retry.ts:101](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L101)
 
 AbortController signal to cancel retries

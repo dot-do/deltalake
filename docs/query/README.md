@@ -14,12 +14,14 @@
 
 ## Type Aliases
 
+- [PrimitiveValue](type-aliases/PrimitiveValue.md)
+- [ComparableValue](type-aliases/ComparableValue.md)
+- [FilterValue](type-aliases/FilterValue.md)
 - [Filter](type-aliases/Filter.md)
 - [Projection](type-aliases/Projection.md)
 
 ## Functions
 
-- [isComparable](functions/isComparable.md)
 - [matchesFilter](functions/matchesFilter.md)
 - [getNestedValue](functions/getNestedValue.md)
 - [filterToParquetPredicate](functions/filterToParquetPredicate.md)

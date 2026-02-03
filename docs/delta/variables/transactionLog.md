@@ -8,7 +8,7 @@
 
 > `const` **transactionLog**: `object`
 
-Defined in: src/delta/index.ts:839
+Defined in: [src/delta/index.ts:656](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L656)
 
 Transaction log utilities for serialization, parsing, and validation
 

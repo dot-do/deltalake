@@ -6,7 +6,9 @@
 
 # Interface: LogicalOperators\<T\>
 
-Defined in: src/query/index.ts:84
+Defined in: [src/query/index.ts:136](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L136)
+
+MongoDB-style logical operators.
 
 ## Type Parameters
 
@@ -20,7 +22,7 @@ Defined in: src/query/index.ts:84
 
 > `optional` **$and**: [`Filter`](../type-aliases/Filter.md)\<`T`\>[]
 
-Defined in: src/query/index.ts:85
+Defined in: [src/query/index.ts:137](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L137)
 
 ***
 
@@ -28,7 +30,7 @@ Defined in: src/query/index.ts:85
 
 > `optional` **$or**: [`Filter`](../type-aliases/Filter.md)\<`T`\>[]
 
-Defined in: src/query/index.ts:86
+Defined in: [src/query/index.ts:138](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L138)
 
 ***
 
@@ -36,7 +38,7 @@ Defined in: src/query/index.ts:86
 
 > `optional` **$not**: [`Filter`](../type-aliases/Filter.md)\<`T`\>
 
-Defined in: src/query/index.ts:87
+Defined in: [src/query/index.ts:139](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L139)
 
 ***
 
@@ -44,4 +46,4 @@ Defined in: src/query/index.ts:87
 
 > `optional` **$nor**: [`Filter`](../type-aliases/Filter.md)\<`T`\>[]
 
-Defined in: src/query/index.ts:88
+Defined in: [src/query/index.ts:140](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L140)

@@ -6,7 +6,7 @@
 
 # Interface: CompactionConfig
 
-Defined in: src/compaction/index.ts:21
+Defined in: [src/compaction/index.ts:94](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L94)
 
 Configuration options for file compaction
 
@@ -14,9 +14,9 @@ Configuration options for file compaction
 
 ### targetFileSize
 
-> **targetFileSize**: `number`
+> `readonly` **targetFileSize**: `number`
 
-Defined in: src/compaction/index.ts:23
+Defined in: [src/compaction/index.ts:96](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L96)
 
 Target file size in bytes (default: 128MB)
 
@@ -24,9 +24,9 @@ Target file size in bytes (default: 128MB)
 
 ### minFilesForCompaction?
 
-> `optional` **minFilesForCompaction**: `number`
+> `readonly` `optional` **minFilesForCompaction**: `number`
 
-Defined in: src/compaction/index.ts:26
+Defined in: [src/compaction/index.ts:99](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L99)
 
 Minimum number of files required to trigger compaction (default: 2)
 
@@ -34,9 +34,9 @@ Minimum number of files required to trigger compaction (default: 2)
 
 ### strategy?
 
-> `optional` **strategy**: `"bin-packing"` \| `"greedy"` \| `"sort-by-size"`
+> `readonly` `optional` **strategy**: `"bin-packing"` \| `"greedy"` \| `"sort-by-size"`
 
-Defined in: src/compaction/index.ts:29
+Defined in: [src/compaction/index.ts:102](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L102)
 
 File selection strategy
 
@@ -44,9 +44,9 @@ File selection strategy
 
 ### partitionColumns?
 
-> `optional` **partitionColumns**: `string`[]
+> `readonly` `optional` **partitionColumns**: readonly `string`[]
 
-Defined in: src/compaction/index.ts:32
+Defined in: [src/compaction/index.ts:105](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L105)
 
 Columns used for partitioning
 
@@ -54,9 +54,9 @@ Columns used for partitioning
 
 ### preserveOrder?
 
-> `optional` **preserveOrder**: `boolean`
+> `readonly` `optional` **preserveOrder**: `boolean`
 
-Defined in: src/compaction/index.ts:35
+Defined in: [src/compaction/index.ts:108](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L108)
 
 Whether to preserve row order during compaction
 
@@ -64,9 +64,9 @@ Whether to preserve row order during compaction
 
 ### verifyIntegrity?
 
-> `optional` **verifyIntegrity**: `boolean`
+> `readonly` `optional` **verifyIntegrity**: `boolean`
 
-Defined in: src/compaction/index.ts:38
+Defined in: [src/compaction/index.ts:111](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L111)
 
 Whether to verify data integrity after compaction
 
@@ -74,9 +74,9 @@ Whether to verify data integrity after compaction
 
 ### dryRun?
 
-> `optional` **dryRun**: `boolean`
+> `readonly` `optional` **dryRun**: `boolean`
 
-Defined in: src/compaction/index.ts:41
+Defined in: [src/compaction/index.ts:114](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L114)
 
 Dry run mode - compute metrics without actually compacting
 
@@ -84,9 +84,9 @@ Dry run mode - compute metrics without actually compacting
 
 ### baseVersion?
 
-> `optional` **baseVersion**: `number`
+> `readonly` `optional` **baseVersion**: `number`
 
-Defined in: src/compaction/index.ts:44
+Defined in: [src/compaction/index.ts:117](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L117)
 
 Base version for optimistic concurrency control
 
@@ -94,9 +94,9 @@ Base version for optimistic concurrency control
 
 ### onProgress()?
 
-> `optional` **onProgress**: (`phase`, `progress`) => `void`
+> `readonly` `optional` **onProgress**: (`phase`, `progress`) => `void`
 
-Defined in: src/compaction/index.ts:47
+Defined in: [src/compaction/index.ts:120](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L120)
 
 Progress callback
 

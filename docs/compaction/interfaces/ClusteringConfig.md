@@ -6,7 +6,7 @@
 
 # Interface: ClusteringConfig
 
-Defined in: src/compaction/index.ts:73
+Defined in: [src/compaction/index.ts:146](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L146)
 
 Configuration options for Z-order clustering
 
@@ -14,9 +14,9 @@ Configuration options for Z-order clustering
 
 ### columns
 
-> **columns**: `string`[]
+> `readonly` **columns**: readonly `string`[]
 
-Defined in: src/compaction/index.ts:75
+Defined in: [src/compaction/index.ts:148](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L148)
 
 Columns to use for clustering
 
@@ -24,9 +24,9 @@ Columns to use for clustering
 
 ### curveType?
 
-> `optional` **curveType**: `"z-order"` \| `"hilbert"`
+> `readonly` `optional` **curveType**: `"z-order"` \| `"hilbert"`
 
-Defined in: src/compaction/index.ts:78
+Defined in: [src/compaction/index.ts:151](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L151)
 
 Type of space-filling curve
 
@@ -34,8 +34,8 @@ Type of space-filling curve
 
 ### dryRun?
 
-> `optional` **dryRun**: `boolean`
+> `readonly` `optional` **dryRun**: `boolean`
 
-Defined in: src/compaction/index.ts:81
+Defined in: [src/compaction/index.ts:154](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L154)
 
 Dry run mode - compute metrics without actually clustering

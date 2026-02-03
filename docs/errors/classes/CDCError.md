@@ -6,7 +6,7 @@
 
 # Class: CDCError
 
-Defined in: src/errors.ts:271
+Defined in: [src/errors.ts:289](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L289)
 
 Error thrown when CDC (Change Data Capture) operations fail.
 
@@ -39,7 +39,7 @@ try {
 
 > **new CDCError**(`message`, `cdcCode`, `cause?`): `CDCError`
 
-Defined in: src/errors.ts:275
+Defined in: [src/errors.ts:293](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L293)
 
 #### Parameters
 
@@ -69,7 +69,7 @@ Defined in: src/errors.ts:275
 
 > `readonly` **code**: `string`
 
-Defined in: src/errors.ts:49
+Defined in: [src/errors.ts:51](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L51)
 
 Error code for programmatic handling.
 Each error subclass defines its own set of codes.
@@ -84,7 +84,7 @@ Each error subclass defines its own set of codes.
 
 > `readonly` `optional` **cause**: `unknown`
 
-Defined in: src/errors.ts:55
+Defined in: [src/errors.ts:57](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L57)
 
 Optional underlying cause of the error.
 Useful for wrapping lower-level errors.
@@ -99,7 +99,7 @@ Useful for wrapping lower-level errors.
 
 > `readonly` **cdcCode**: [`CDCErrorCode`](../type-aliases/CDCErrorCode.md)
 
-Defined in: src/errors.ts:273
+Defined in: [src/errors.ts:291](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L291)
 
 CDC-specific error code
 

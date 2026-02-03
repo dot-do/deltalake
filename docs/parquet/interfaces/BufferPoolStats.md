@@ -6,7 +6,7 @@
 
 # Interface: BufferPoolStats
 
-Defined in: src/parquet/streaming-writer.ts:124
+Defined in: [src/parquet/streaming-writer.ts:137](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L137)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: src/parquet/streaming-writer.ts:124
 
 > **created**: `number`
 
-Defined in: src/parquet/streaming-writer.ts:125
+Defined in: [src/parquet/streaming-writer.ts:138](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L138)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: src/parquet/streaming-writer.ts:125
 
 > **reused**: `number`
 
-Defined in: src/parquet/streaming-writer.ts:126
+Defined in: [src/parquet/streaming-writer.ts:139](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L139)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: src/parquet/streaming-writer.ts:126
 
 > **active**: `number`
 
-Defined in: src/parquet/streaming-writer.ts:127
+Defined in: [src/parquet/streaming-writer.ts:140](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L140)

@@ -20,36 +20,39 @@ This module provides:
 
 ## Classes
 
-- [DeltaTable](classes/DeltaTable.md)
 - [AbortError](classes/AbortError.md)
 
 ## Interfaces
 
-- [DeletionVectorDescriptor](interfaces/DeletionVectorDescriptor.md)
-- [AddAction](interfaces/AddAction.md)
-- [RemoveAction](interfaces/RemoveAction.md)
-- [MetadataAction](interfaces/MetadataAction.md)
-- [ProtocolAction](interfaces/ProtocolAction.md)
-- [CommitInfoAction](interfaces/CommitInfoAction.md)
-- [DeltaCommit](interfaces/DeltaCommit.md)
-- [DeltaSnapshot](interfaces/DeltaSnapshot.md)
-- [QueryOptions](interfaces/QueryOptions.md)
-- [WriteOptions](interfaces/WriteOptions.md)
-- [CheckpointConfig](interfaces/CheckpointConfig.md)
-- [FileStats](interfaces/FileStats.md)
 - [RetryInfo](interfaces/RetryInfo.md)
 - [SuccessInfo](interfaces/SuccessInfo.md)
 - [FailureInfo](interfaces/FailureInfo.md)
 - [RetryMetrics](interfaces/RetryMetrics.md)
 - [RetryConfig](interfaces/RetryConfig.md)
 - [RetryResultWithMetrics](interfaces/RetryResultWithMetrics.md)
+- [DeletionVectorDescriptor](interfaces/DeletionVectorDescriptor.md)
+- [MetadataAction](interfaces/MetadataAction.md)
+- [ProtocolAction](interfaces/ProtocolAction.md)
+- [CommitInfoAction](interfaces/CommitInfoAction.md)
+- [DeltaSchemaField](interfaces/DeltaSchemaField.md)
+- [DeltaSchema](interfaces/DeltaSchema.md)
+- [QueryOptions](interfaces/QueryOptions.md)
+- [CheckpointConfig](interfaces/CheckpointConfig.md)
+- [CompactionContext](interfaces/CompactionContext.md)
+- [LastCheckpoint](interfaces/LastCheckpoint.md)
+- [InferredField](interfaces/InferredField.md)
+- [InferredSchema](interfaces/InferredSchema.md)
 
 ## Type Aliases
 
 - [DeltaAction](type-aliases/DeltaAction.md)
+- [InferredFieldType](type-aliases/InferredFieldType.md)
 
 ## Variables
 
+- [LAST\_CHECKPOINT\_FILE](variables/LAST_CHECKPOINT_FILE.md)
+- [PARQUET\_MAGIC](variables/PARQUET_MAGIC.md)
+- [DEFAULT\_CHECKPOINT\_CONFIG](variables/DEFAULT_CHECKPOINT_CONFIG.md)
 - [VERSION\_DIGITS](variables/VERSION_DIGITS.md)
 - [DELTA\_LOG\_DIR](variables/DELTA_LOG_DIR.md)
 - [transactionLog](variables/transactionLog.md)
@@ -57,6 +60,23 @@ This module provides:
 
 ## Functions
 
+- [readLastCheckpoint](functions/readLastCheckpoint.md)
+- [writeLastCheckpoint](functions/writeLastCheckpoint.md)
+- [readCheckpoint](functions/readCheckpoint.md)
+- [readCheckpointPart](functions/readCheckpointPart.md)
+- [readMultiPartCheckpoint](functions/readMultiPartCheckpoint.md)
+- [rowsToSnapshot](functions/rowsToSnapshot.md)
+- [writeSingleCheckpoint](functions/writeSingleCheckpoint.md)
+- [createMultiPartCheckpoint](functions/createMultiPartCheckpoint.md)
+- [actionsToColumns](functions/actionsToColumns.md)
+- [estimateCheckpointSize](functions/estimateCheckpointSize.md)
+- [discoverCheckpoints](functions/discoverCheckpoints.md)
+- [findLatestCheckpoint](functions/findLatestCheckpoint.md)
+- [validateCheckpoint](functions/validateCheckpoint.md)
+- [cleanupCheckpoints](functions/cleanupCheckpoints.md)
+- [getCleanableLogVersions](functions/getCleanableLogVersions.md)
+- [cleanupLogs](functions/cleanupLogs.md)
+- [shouldCheckpoint](functions/shouldCheckpoint.md)
 - [z85Decode](functions/z85Decode.md)
 - [z85DecodeUuid](functions/z85DecodeUuid.md)
 - [getDeletionVectorPath](functions/getDeletionVectorPath.md)
@@ -67,17 +87,6 @@ This module provides:
 - [decodeFilePath](functions/decodeFilePath.md)
 - [createAddAction](functions/createAddAction.md)
 - [createRemoveAction](functions/createRemoveAction.md)
-- [isAddAction](functions/isAddAction.md)
-- [isRemoveAction](functions/isRemoveAction.md)
-- [isMetadataAction](functions/isMetadataAction.md)
-- [isProtocolAction](functions/isProtocolAction.md)
-- [isCommitInfoAction](functions/isCommitInfoAction.md)
-- [isValidAddAction](functions/isValidAddAction.md)
-- [isValidRemoveAction](functions/isValidRemoveAction.md)
-- [isValidMetadataAction](functions/isValidMetadataAction.md)
-- [isValidProtocolAction](functions/isValidProtocolAction.md)
-- [isValidCommitInfoAction](functions/isValidCommitInfoAction.md)
-- [isValidDeltaAction](functions/isValidDeltaAction.md)
 - [serializeAction](functions/serializeAction.md)
 - [deserializeAction](functions/deserializeAction.md)
 - [validateAddAction](functions/validateAddAction.md)
@@ -85,6 +94,16 @@ This module provides:
 - [parseStats](functions/parseStats.md)
 - [encodeStats](functions/encodeStats.md)
 - [withRetry](functions/withRetry.md)
+- [buildColumnMapping](functions/buildColumnMapping.md)
+- [applyColumnMapping](functions/applyColumnMapping.md)
+- [isValidDeltaSchemaField](functions/isValidDeltaSchemaField.md)
+- [isValidDeltaSchema](functions/isValidDeltaSchema.md)
+- [isValidLastCheckpoint](functions/isValidLastCheckpoint.md)
+- [isAddAction](functions/isAddAction.md)
+- [isRemoveAction](functions/isRemoveAction.md)
+- [isMetadataAction](functions/isMetadataAction.md)
+- [isProtocolAction](functions/isProtocolAction.md)
+- [isCommitInfoAction](functions/isCommitInfoAction.md)
 
 ## References
 
@@ -106,6 +125,48 @@ Re-exports [ValidationError](../errors/classes/ValidationError.md)
 
 ***
 
+### matchesFilter
+
+Re-exports [matchesFilter](../query/functions/matchesFilter.md)
+
+***
+
+### AddAction
+
+Re-exports [AddAction](../index/interfaces/AddAction.md)
+
+***
+
+### RemoveAction
+
+Re-exports [RemoveAction](../index/interfaces/RemoveAction.md)
+
+***
+
+### DeltaCommit
+
+Re-exports [DeltaCommit](../index/interfaces/DeltaCommit.md)
+
+***
+
+### DeltaSnapshot
+
+Re-exports [DeltaSnapshot](../index/interfaces/DeltaSnapshot.md)
+
+***
+
+### WriteOptions
+
+Re-exports [WriteOptions](../index/interfaces/WriteOptions.md)
+
+***
+
+### FileStats
+
+Re-exports [FileStats](../index/interfaces/FileStats.md)
+
+***
+
 ### Filter
 
 Re-exports [Filter](../query/type-aliases/Filter.md)
@@ -118,9 +179,57 @@ Re-exports [Projection](../query/type-aliases/Projection.md)
 
 ***
 
-### matchesFilter
+### isValidPartitionValues
 
-Re-exports [matchesFilter](../query/functions/matchesFilter.md)
+Re-exports [isValidPartitionValues](../index/functions/isValidPartitionValues.md)
+
+***
+
+### isValidFileStats
+
+Re-exports [isValidFileStats](../index/functions/isValidFileStats.md)
+
+***
+
+### isValidAddAction
+
+Re-exports [isValidAddAction](../index/functions/isValidAddAction.md)
+
+***
+
+### isValidRemoveAction
+
+Re-exports [isValidRemoveAction](../index/functions/isValidRemoveAction.md)
+
+***
+
+### isValidMetadataAction
+
+Re-exports [isValidMetadataAction](../index/functions/isValidMetadataAction.md)
+
+***
+
+### isValidProtocolAction
+
+Re-exports [isValidProtocolAction](../index/functions/isValidProtocolAction.md)
+
+***
+
+### isValidCommitInfoAction
+
+Re-exports [isValidCommitInfoAction](../index/functions/isValidCommitInfoAction.md)
+
+***
+
+### isValidDeltaAction
+
+Re-exports [isValidDeltaAction](../index/functions/isValidDeltaAction.md)
+
+***
+
+### DeltaTable
+
+Re-exports [DeltaTable](../index/classes/DeltaTable.md)
 
 ***
 

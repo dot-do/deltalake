@@ -6,15 +6,15 @@
 
 # Interface: ParquetWriterOptions
 
-Defined in: src/parquet/index.ts:50
+Defined in: [src/parquet/index.ts:50](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L50)
 
 ## Properties
 
 ### rowGroupSize?
 
-> `optional` **rowGroupSize**: `number`
+> `readonly` `optional` **rowGroupSize**: `number`
 
-Defined in: src/parquet/index.ts:52
+Defined in: [src/parquet/index.ts:52](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L52)
 
 Row group size (default: 10000)
 
@@ -22,9 +22,9 @@ Row group size (default: 10000)
 
 ### targetFileSize?
 
-> `optional` **targetFileSize**: `number`
+> `readonly` `optional` **targetFileSize**: `number`
 
-Defined in: src/parquet/index.ts:55
+Defined in: [src/parquet/index.ts:55](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L55)
 
 Target file size in bytes (default: 128MB)
 
@@ -32,9 +32,9 @@ Target file size in bytes (default: 128MB)
 
 ### compression?
 
-> `optional` **compression**: `"UNCOMPRESSED"` \| `"SNAPPY"` \| `"LZ4"` \| `"LZ4_RAW"` \| `"GZIP"` \| `"ZSTD"`
+> `readonly` `optional` **compression**: `"UNCOMPRESSED"` \| `"SNAPPY"` \| `"LZ4"` \| `"LZ4_RAW"` \| `"GZIP"` \| `"ZSTD"`
 
-Defined in: src/parquet/index.ts:58
+Defined in: [src/parquet/index.ts:58](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L58)
 
 Compression codec
 
@@ -42,9 +42,9 @@ Compression codec
 
 ### schema?
 
-> `optional` **schema**: [`ParquetSchema`](ParquetSchema.md)
+> `readonly` `optional` **schema**: [`ParquetSchema`](ParquetSchema.md)
 
-Defined in: src/parquet/index.ts:61
+Defined in: [src/parquet/index.ts:61](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L61)
 
 Schema (optional - inferred from first row if not provided)
 
@@ -52,8 +52,8 @@ Schema (optional - inferred from first row if not provided)
 
 ### shredFields?
 
-> `optional` **shredFields**: `string`[]
+> `readonly` `optional` **shredFields**: readonly `string`[]
 
-Defined in: src/parquet/index.ts:64
+Defined in: [src/parquet/index.ts:64](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L64)
 
 Fields to shred into typed columns for statistics

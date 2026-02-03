@@ -8,7 +8,7 @@
 
 > **StorageOptions** = \{ `type`: `"filesystem"`; `path`: `string`; \} \| \{ `type`: `"r2"`; `bucket`: `R2Bucket`; \} \| \{ `type`: `"s3"`; `bucket`: `string`; `region`: `string`; `credentials?`: [`S3Credentials`](../interfaces/S3Credentials.md); \} \| \{ `type`: `"memory"`; \}
 
-Defined in: src/storage/index.ts:352
+Defined in: [src/storage/index.ts:417](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L417)
 
 Configuration options for creating a storage backend.
 

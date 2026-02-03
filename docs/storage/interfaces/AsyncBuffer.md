@@ -6,7 +6,7 @@
 
 # Interface: AsyncBuffer
 
-Defined in: src/storage/index.ts:62
+Defined in: [src/storage/index.ts:65](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L65)
 
 AsyncBuffer interface for byte-range reads.
 This is the interface expected by hyparquet for reading Parquet files.
@@ -20,7 +20,7 @@ allowing for lazy loading of file contents.
 
 > **byteLength**: `number`
 
-Defined in: src/storage/index.ts:64
+Defined in: [src/storage/index.ts:67](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L67)
 
 Total byte length of the file
 
@@ -30,7 +30,7 @@ Total byte length of the file
 
 > **slice**(`start`, `end?`): `ArrayBuffer` \| `Promise`\<`ArrayBuffer`\>
 
-Defined in: src/storage/index.ts:73
+Defined in: [src/storage/index.ts:76](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L76)
 
 Read a byte range [start, end) from the file.
 

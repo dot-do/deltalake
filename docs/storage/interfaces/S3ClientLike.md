@@ -6,7 +6,7 @@
 
 # Interface: S3ClientLike
 
-Defined in: src/storage/index.ts:1323
+Defined in: [src/storage/index.ts:1477](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1477)
 
 S3Client interface - matches AWS SDK v3 S3Client.send() pattern.
 Uses discriminated union with conditional type for type-safe command/response mapping.
@@ -21,7 +21,7 @@ response type at compile time, eliminating the need for type assertions.
 
 > **send**\<`T`\>(`command`): `Promise`\<`S3ResponseMap`\[`T`\[`"_type"`\]\]\>
 
-Defined in: src/storage/index.ts:1324
+Defined in: [src/storage/index.ts:1478](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1478)
 
 #### Type Parameters
 

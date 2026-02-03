@@ -6,7 +6,7 @@
 
 # Interface: ParquetMetadata
 
-Defined in: src/parquet/index.ts:92
+Defined in: [src/parquet/index.ts:92](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L92)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: src/parquet/index.ts:92
 
 > **numRows**: `number`
 
-Defined in: src/parquet/index.ts:93
+Defined in: [src/parquet/index.ts:93](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L93)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: src/parquet/index.ts:93
 
 > **numRowGroups**: `number`
 
-Defined in: src/parquet/index.ts:94
+Defined in: [src/parquet/index.ts:94](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L94)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: src/parquet/index.ts:94
 
 > **schema**: [`ParquetSchema`](ParquetSchema.md)
 
-Defined in: src/parquet/index.ts:95
+Defined in: [src/parquet/index.ts:95](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L95)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: src/parquet/index.ts:95
 
 > **keyValueMetadata**: `Record`\<`string`, `string`\>
 
-Defined in: src/parquet/index.ts:96
+Defined in: [src/parquet/index.ts:96](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L96)

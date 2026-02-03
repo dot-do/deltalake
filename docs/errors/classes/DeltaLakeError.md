@@ -6,7 +6,7 @@
 
 # Class: DeltaLakeError
 
-Defined in: src/errors.ts:44
+Defined in: [src/errors.ts:46](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L46)
 
 Base error class for all DeltaLake errors.
 Provides a consistent `code` property for programmatic error handling.
@@ -28,7 +28,7 @@ Provides a consistent `code` property for programmatic error handling.
 
 > **new DeltaLakeError**(`message`, `code`, `cause?`): `DeltaLakeError`
 
-Defined in: src/errors.ts:57
+Defined in: [src/errors.ts:59](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L59)
 
 #### Parameters
 
@@ -58,7 +58,7 @@ Defined in: src/errors.ts:57
 
 > `readonly` **code**: `string`
 
-Defined in: src/errors.ts:49
+Defined in: [src/errors.ts:51](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L51)
 
 Error code for programmatic handling.
 Each error subclass defines its own set of codes.
@@ -69,7 +69,7 @@ Each error subclass defines its own set of codes.
 
 > `readonly` `optional` **cause**: `unknown`
 
-Defined in: src/errors.ts:55
+Defined in: [src/errors.ts:57](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L57)
 
 Optional underlying cause of the error.
 Useful for wrapping lower-level errors.

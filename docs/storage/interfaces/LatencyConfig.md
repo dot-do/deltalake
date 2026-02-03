@@ -6,7 +6,7 @@
 
 # Interface: LatencyConfig
 
-Defined in: src/storage/index.ts:1755
+Defined in: [src/storage/index.ts:2003](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2003)
 
 Latency configuration for simulating slow storage operations.
 
@@ -16,7 +16,7 @@ Latency configuration for simulating slow storage operations.
 
 > `readonly` `optional` **read**: `number`
 
-Defined in: src/storage/index.ts:1757
+Defined in: [src/storage/index.ts:2005](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2005)
 
 Simulated read latency in milliseconds
 
@@ -26,7 +26,7 @@ Simulated read latency in milliseconds
 
 > `readonly` `optional` **write**: `number`
 
-Defined in: src/storage/index.ts:1759
+Defined in: [src/storage/index.ts:2007](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2007)
 
 Simulated write latency in milliseconds
 
@@ -36,7 +36,7 @@ Simulated write latency in milliseconds
 
 > `readonly` `optional` **delete**: `number`
 
-Defined in: src/storage/index.ts:1761
+Defined in: [src/storage/index.ts:2009](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2009)
 
 Simulated delete latency in milliseconds
 
@@ -46,6 +46,6 @@ Simulated delete latency in milliseconds
 
 > `readonly` `optional` **list**: `number`
 
-Defined in: src/storage/index.ts:1763
+Defined in: [src/storage/index.ts:2011](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L2011)
 
 Simulated list latency in milliseconds

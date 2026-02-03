@@ -6,7 +6,7 @@
 
 # Interface: CDCConsumerOptions
 
-Defined in: src/cdc/index.ts:340
+Defined in: [src/cdc/index.ts:464](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L464)
 
 Options for creating a CDC consumer.
 
@@ -14,9 +14,9 @@ Options for creating a CDC consumer.
 
 ### fromSeq?
 
-> `optional` **fromSeq**: `bigint`
+> `readonly` `optional` **fromSeq**: `bigint`
 
-Defined in: src/cdc/index.ts:342
+Defined in: [src/cdc/index.ts:466](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L466)
 
 Starting sequence number (records before this are skipped)
 
@@ -24,9 +24,9 @@ Starting sequence number (records before this are skipped)
 
 ### fromTimestamp?
 
-> `optional` **fromTimestamp**: `Date`
+> `readonly` `optional` **fromTimestamp**: `Date`
 
-Defined in: src/cdc/index.ts:345
+Defined in: [src/cdc/index.ts:469](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L469)
 
 Starting timestamp (records before this are skipped)
 
@@ -34,8 +34,8 @@ Starting timestamp (records before this are skipped)
 
 ### operations?
 
-> `optional` **operations**: readonly [`CDCOperation`](../type-aliases/CDCOperation.md)[]
+> `readonly` `optional` **operations**: readonly [`CDCOperation`](../type-aliases/CDCOperation.md)[]
 
-Defined in: src/cdc/index.ts:348
+Defined in: [src/cdc/index.ts:472](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L472)
 
 Filter by operation types (only these operations are processed)

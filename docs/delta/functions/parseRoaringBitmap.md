@@ -8,7 +8,7 @@
 
 > **parseRoaringBitmap**(`data`): `Set`\<`number`\>
 
-Defined in: src/delta/index.ts:218
+Defined in: [src/delta/index.ts:266](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L266)
 
 Parse a serialized RoaringBitmap (or RoaringTreemap for 64-bit) and return the set of deleted row indices.
 

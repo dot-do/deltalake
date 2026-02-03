@@ -6,9 +6,9 @@
 
 # Interface: QueryOptions\<T\>
 
-Defined in: src/query/index.ts:66
+Defined in: [src/query/index.ts:108](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L108)
 
-Query options for DeltaTable.query()
+Query options for DeltaTable.query().
 
 ## Type Parameters
 
@@ -20,6 +20,6 @@ Query options for DeltaTable.query()
 
 ### projection?
 
-> `optional` **projection**: [`Projection`](../type-aliases/Projection.md)\<`T`\>
+> `readonly` `optional` **projection**: [`Projection`](../type-aliases/Projection.md)\<`T`\>
 
-Defined in: src/query/index.ts:67
+Defined in: [src/query/index.ts:109](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L109)

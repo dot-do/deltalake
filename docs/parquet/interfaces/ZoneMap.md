@@ -6,7 +6,7 @@
 
 # Interface: ZoneMap
 
-Defined in: src/parquet/index.ts:105
+Defined in: [src/parquet/index.ts:103](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L103)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: src/parquet/index.ts:105
 
 > **column**: `string`
 
-Defined in: src/parquet/index.ts:106
+Defined in: [src/parquet/index.ts:104](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L104)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: src/parquet/index.ts:106
 
 > **min**: `unknown`
 
-Defined in: src/parquet/index.ts:107
+Defined in: [src/parquet/index.ts:105](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L105)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: src/parquet/index.ts:107
 
 > **max**: `unknown`
 
-Defined in: src/parquet/index.ts:108
+Defined in: [src/parquet/index.ts:106](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L106)
 
 ***
 
@@ -38,4 +38,4 @@ Defined in: src/parquet/index.ts:108
 
 > **nullCount**: `number`
 
-Defined in: src/parquet/index.ts:109
+Defined in: [src/parquet/index.ts:107](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L107)

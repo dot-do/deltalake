@@ -32,5 +32,6 @@
 - [isConcurrencyError](functions/isConcurrencyError.md)
 - [isCDCError](functions/isCDCError.md)
 - [isValidationError](functions/isValidationError.md)
-- [hasRetryableProperty](functions/hasRetryableProperty.md)
 - [isRetryableError](functions/isRetryableError.md)
+- [isFileNotFoundError](functions/isFileNotFoundError.md)
+- [isVersionMismatchError](functions/isVersionMismatchError.md)

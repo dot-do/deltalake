@@ -6,7 +6,7 @@
 
 # Interface: CommitInfoAction
 
-Defined in: src/delta/index.ts:639
+Defined in: [src/delta/types.ts:110](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L110)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: src/delta/index.ts:639
 
 > **commitInfo**: `object`
 
-Defined in: src/delta/index.ts:640
+Defined in: [src/delta/types.ts:111](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L111)
 
 #### timestamp
 

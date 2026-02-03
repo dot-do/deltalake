@@ -6,23 +6,49 @@
 
 # index
 
+## Classes
+
+- [DeltaTable](classes/DeltaTable.md)
+
 ## Interfaces
 
+- [AddAction](interfaces/AddAction.md)
+- [RemoveAction](interfaces/RemoveAction.md)
+- [DeltaCommit](interfaces/DeltaCommit.md)
+- [DeltaSnapshot](interfaces/DeltaSnapshot.md)
+- [WriteOptions](interfaces/WriteOptions.md)
+- [FileStats](interfaces/FileStats.md)
 - [VacuumConfig](interfaces/VacuumConfig.md)
 - [VacuumMetrics](interfaces/VacuumMetrics.md)
 - [EncodedVariant](interfaces/EncodedVariant.md)
+- [Logger](interfaces/Logger.md)
 
 ## Type Aliases
 
 - [VariantValue](type-aliases/VariantValue.md)
+
+## Variables
+
+- [defaultLogger](variables/defaultLogger.md)
 
 ## Functions
 
 - [vacuum](functions/vacuum.md)
 - [formatBytes](functions/formatBytes.md)
 - [formatDuration](functions/formatDuration.md)
+- [isValidPartitionValues](functions/isValidPartitionValues.md)
+- [isValidFileStats](functions/isValidFileStats.md)
+- [isValidAddAction](functions/isValidAddAction.md)
+- [isValidRemoveAction](functions/isValidRemoveAction.md)
+- [isValidMetadataAction](functions/isValidMetadataAction.md)
+- [isValidProtocolAction](functions/isValidProtocolAction.md)
+- [isValidCommitInfoAction](functions/isValidCommitInfoAction.md)
+- [isValidDeltaAction](functions/isValidDeltaAction.md)
 - [encodeVariant](functions/encodeVariant.md)
 - [decodeVariant](functions/decodeVariant.md)
+- [setLogger](functions/setLogger.md)
+- [getLogger](functions/getLogger.md)
+- [assertNever](functions/assertNever.md)
 
 ## References
 
@@ -284,39 +310,9 @@ Re-exports [createCDCDeltaTable](../cdc/functions/createCDCDeltaTable.md)
 
 ***
 
-### DeltaTable
+### isValidCDCConfig
 
-Re-exports [DeltaTable](../delta/classes/DeltaTable.md)
-
-***
-
-### DeltaCommit
-
-Re-exports [DeltaCommit](../delta/interfaces/DeltaCommit.md)
-
-***
-
-### DeltaSnapshot
-
-Re-exports [DeltaSnapshot](../delta/interfaces/DeltaSnapshot.md)
-
-***
-
-### AddAction
-
-Re-exports [AddAction](../delta/interfaces/AddAction.md)
-
-***
-
-### RemoveAction
-
-Re-exports [RemoveAction](../delta/interfaces/RemoveAction.md)
-
-***
-
-### WriteOptions
-
-Re-exports [WriteOptions](../delta/interfaces/WriteOptions.md)
+Re-exports [isValidCDCConfig](../cdc/functions/isValidCDCConfig.md)
 
 ***
 
@@ -329,3 +325,57 @@ Re-exports [formatVersion](../delta/functions/formatVersion.md)
 ### VERSION\_DIGITS
 
 Re-exports [VERSION_DIGITS](../delta/variables/VERSION_DIGITS.md)
+
+***
+
+### compact
+
+Re-exports [compact](../compaction/functions/compact.md)
+
+***
+
+### deduplicate
+
+Re-exports [deduplicate](../compaction/functions/deduplicate.md)
+
+***
+
+### zOrderCluster
+
+Re-exports [zOrderCluster](../compaction/functions/zOrderCluster.md)
+
+***
+
+### CompactionConfig
+
+Re-exports [CompactionConfig](../compaction/interfaces/CompactionConfig.md)
+
+***
+
+### DeduplicationConfig
+
+Re-exports [DeduplicationConfig](../compaction/interfaces/DeduplicationConfig.md)
+
+***
+
+### ClusteringConfig
+
+Re-exports [ClusteringConfig](../compaction/interfaces/ClusteringConfig.md)
+
+***
+
+### CompactionMetrics
+
+Re-exports [CompactionMetrics](../compaction/interfaces/CompactionMetrics.md)
+
+***
+
+### DeduplicationMetrics
+
+Re-exports [DeduplicationMetrics](../compaction/interfaces/DeduplicationMetrics.md)
+
+***
+
+### ClusteringMetrics
+
+Re-exports [ClusteringMetrics](../compaction/interfaces/ClusteringMetrics.md)

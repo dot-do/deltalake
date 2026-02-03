@@ -8,7 +8,7 @@
 
 > **decodeFilePath**(`filePath`): `string`
 
-Defined in: src/delta/index.ts:532
+Defined in: [src/delta/index.ts:640](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L640)
 
 Decode URL-encoded characters in a file path from the Delta log.
 

@@ -6,7 +6,7 @@
 
 # Interface: CDCProducerOptions
 
-Defined in: src/cdc/index.ts:226
+Defined in: [src/cdc/index.ts:280](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L280)
 
 Options for creating a CDC producer.
 
@@ -14,9 +14,9 @@ Options for creating a CDC producer.
 
 ### source
 
-> **source**: `Omit`\<[`CDCSource`](CDCSource.md), `"system"`\>
+> `readonly` **source**: `Omit`\<[`CDCSource`](CDCSource.md), `"system"`\>
 
-Defined in: src/cdc/index.ts:228
+Defined in: [src/cdc/index.ts:282](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L282)
 
 Source metadata (excluding system, which can be specified separately)
 
@@ -24,8 +24,8 @@ Source metadata (excluding system, which can be specified separately)
 
 ### system?
 
-> `optional` **system**: `"mongolake"` \| `"kafkalake"` \| `"postgres"` \| `"mysql"` \| `"debezium"` \| `"deltalake"`
+> `readonly` `optional` **system**: `"mongolake"` \| `"kafkalake"` \| `"postgres"` \| `"mysql"` \| `"debezium"` \| `"deltalake"`
 
-Defined in: src/cdc/index.ts:230
+Defined in: [src/cdc/index.ts:284](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L284)
 
 Source system identifier (defaults to 'kafkalake')

@@ -8,7 +8,7 @@
 
 > **getStatisticsPaths**(`columnName`, `shredFields`): `string`[]
 
-Defined in: src/parquet/index.ts:274
+Defined in: [src/parquet/index.ts:302](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L302)
 
 Get the column paths that have statistics available after shredding.
 These can be used for predicate pushdown.

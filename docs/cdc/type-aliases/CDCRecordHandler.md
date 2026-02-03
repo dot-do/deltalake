@@ -8,7 +8,7 @@
 
 > **CDCRecordHandler**\<`T`\> = (`record`) => `Promise`\<`void`\>
 
-Defined in: src/cdc/index.ts:354
+Defined in: [src/cdc/index.ts:480](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L480)
 
 Handler function type for CDC record processing.
 

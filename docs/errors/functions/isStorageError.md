@@ -8,7 +8,7 @@
 
 > **isStorageError**(`error`): `error is StorageError`
 
-Defined in: src/errors.ts:335
+Defined in: [src/errors.ts:359](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L359)
 
 Check if an error is a StorageError.
 

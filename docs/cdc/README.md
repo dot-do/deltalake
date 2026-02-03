@@ -32,6 +32,7 @@
 
 ## Functions
 
+- [isValidCDCConfig](functions/isValidCDCConfig.md)
 - [createCDCDeltaTable](functions/createCDCDeltaTable.md)
 
 ## References

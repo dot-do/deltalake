@@ -6,7 +6,7 @@
 
 # Class: S3Error
 
-Defined in: src/errors.ts:149
+Defined in: [src/errors.ts:159](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L159)
 
 S3-specific error class for wrapping AWS S3 errors with meaningful messages.
 
@@ -25,7 +25,7 @@ Common error codes:
 
 > **new S3Error**(`message`, `s3Code`, `statusCode`, `path`): `S3Error`
 
-Defined in: src/errors.ts:156
+Defined in: [src/errors.ts:166](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L166)
 
 #### Parameters
 
@@ -59,7 +59,7 @@ Defined in: src/errors.ts:156
 
 > `readonly` **code**: `string`
 
-Defined in: src/errors.ts:49
+Defined in: [src/errors.ts:51](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L51)
 
 Error code for programmatic handling.
 Each error subclass defines its own set of codes.
@@ -74,7 +74,7 @@ Each error subclass defines its own set of codes.
 
 > `readonly` `optional` **cause**: `unknown`
 
-Defined in: src/errors.ts:55
+Defined in: [src/errors.ts:57](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L57)
 
 Optional underlying cause of the error.
 Useful for wrapping lower-level errors.
@@ -89,7 +89,7 @@ Useful for wrapping lower-level errors.
 
 > `readonly` **path**: `string`
 
-Defined in: src/errors.ts:80
+Defined in: [src/errors.ts:84](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L84)
 
 The storage path involved in the error
 
@@ -103,7 +103,7 @@ The storage path involved in the error
 
 > `readonly` **operation**: `string`
 
-Defined in: src/errors.ts:83
+Defined in: [src/errors.ts:87](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L87)
 
 The operation that failed (e.g., 'read', 'write', 'delete')
 
@@ -117,7 +117,7 @@ The operation that failed (e.g., 'read', 'write', 'delete')
 
 > `readonly` **s3Code**: `string`
 
-Defined in: src/errors.ts:151
+Defined in: [src/errors.ts:161](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L161)
 
 S3 error code (e.g., 'NoSuchKey', 'AccessDenied')
 
@@ -127,7 +127,7 @@ S3 error code (e.g., 'NoSuchKey', 'AccessDenied')
 
 > `readonly` **statusCode**: `number`
 
-Defined in: src/errors.ts:154
+Defined in: [src/errors.ts:164](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L164)
 
 HTTP status code from S3
 

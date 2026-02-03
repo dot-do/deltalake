@@ -8,7 +8,7 @@
 
 > **createAsyncBuffer**(`storage`, `path`): `Promise`\<[`AsyncBuffer`](../interfaces/AsyncBuffer.md)\>
 
-Defined in: src/storage/index.ts:92
+Defined in: [src/storage/index.ts:97](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L97)
 
 Create an AsyncBuffer from a StorageBackend.
 This allows hyparquet to read Parquet files efficiently using byte ranges.

@@ -6,7 +6,7 @@
 
 # Interface: CDCDeltaTable\<T\>
 
-Defined in: src/cdc/index.ts:185
+Defined in: [src/cdc/index.ts:237](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L237)
 
 CDC-enabled Delta Table interface.
 Extends standard Delta Table operations with CDC tracking.
@@ -25,7 +25,7 @@ The row data type
 
 > **setCDCEnabled**(`enabled`): `Promise`\<`void`\>
 
-Defined in: src/cdc/index.ts:187
+Defined in: [src/cdc/index.ts:239](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L239)
 
 Enable or disable CDC for this table
 
@@ -45,7 +45,7 @@ Enable or disable CDC for this table
 
 > **isCDCEnabled**(): `Promise`\<`boolean`\>
 
-Defined in: src/cdc/index.ts:190
+Defined in: [src/cdc/index.ts:242](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L242)
 
 Check if CDC is enabled
 
@@ -59,7 +59,7 @@ Check if CDC is enabled
 
 > **getCDCReader**(): [`CDCReader`](CDCReader.md)\<`T`\>
 
-Defined in: src/cdc/index.ts:193
+Defined in: [src/cdc/index.ts:245](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L245)
 
 Get CDC reader for this table
 
@@ -71,9 +71,9 @@ Get CDC reader for this table
 
 ### write()
 
-> **write**(`rows`): `Promise`\<[`DeltaCommit`](../../delta/interfaces/DeltaCommit.md)\>
+> **write**(`rows`): `Promise`\<[`DeltaCommit`](../../index/interfaces/DeltaCommit.md)\>
 
-Defined in: src/cdc/index.ts:196
+Defined in: [src/cdc/index.ts:248](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L248)
 
 Write data and generate CDC records
 
@@ -85,15 +85,15 @@ Write data and generate CDC records
 
 #### Returns
 
-`Promise`\<[`DeltaCommit`](../../delta/interfaces/DeltaCommit.md)\>
+`Promise`\<[`DeltaCommit`](../../index/interfaces/DeltaCommit.md)\>
 
 ***
 
 ### update()
 
-> **update**(`filter`, `updates`): `Promise`\<[`DeltaCommit`](../../delta/interfaces/DeltaCommit.md)\>
+> **update**(`filter`, `updates`): `Promise`\<[`DeltaCommit`](../../index/interfaces/DeltaCommit.md)\>
 
-Defined in: src/cdc/index.ts:199
+Defined in: [src/cdc/index.ts:251](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L251)
 
 Update rows and generate CDC records with before/after images
 
@@ -109,15 +109,15 @@ Update rows and generate CDC records with before/after images
 
 #### Returns
 
-`Promise`\<[`DeltaCommit`](../../delta/interfaces/DeltaCommit.md)\>
+`Promise`\<[`DeltaCommit`](../../index/interfaces/DeltaCommit.md)\>
 
 ***
 
 ### deleteRows()
 
-> **deleteRows**(`filter`): `Promise`\<[`DeltaCommit`](../../delta/interfaces/DeltaCommit.md)\>
+> **deleteRows**(`filter`): `Promise`\<[`DeltaCommit`](../../index/interfaces/DeltaCommit.md)\>
 
-Defined in: src/cdc/index.ts:202
+Defined in: [src/cdc/index.ts:254](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L254)
 
 Delete rows and generate CDC records
 
@@ -129,15 +129,15 @@ Delete rows and generate CDC records
 
 #### Returns
 
-`Promise`\<[`DeltaCommit`](../../delta/interfaces/DeltaCommit.md)\>
+`Promise`\<[`DeltaCommit`](../../index/interfaces/DeltaCommit.md)\>
 
 ***
 
 ### merge()
 
-> **merge**(`rows`, `matchCondition`, `whenMatched?`, `whenNotMatched?`): `Promise`\<[`DeltaCommit`](../../delta/interfaces/DeltaCommit.md)\>
+> **merge**(`rows`, `matchCondition`, `whenMatched?`, `whenNotMatched?`): `Promise`\<[`DeltaCommit`](../../index/interfaces/DeltaCommit.md)\>
 
-Defined in: src/cdc/index.ts:211
+Defined in: [src/cdc/index.ts:263](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L263)
 
 Merge data (upsert) with CDC tracking.
 
@@ -169,4 +169,4 @@ Transform for unmatched rows (return null to skip)
 
 #### Returns
 
-`Promise`\<[`DeltaCommit`](../../delta/interfaces/DeltaCommit.md)\>
+`Promise`\<[`DeltaCommit`](../../index/interfaces/DeltaCommit.md)\>

@@ -8,9 +8,9 @@
 
 > **Projection**\<`T`\> = (keyof `T` \| `string`)[] \| \{ \[K in keyof T \| string\]?: 1 \| 0 \}
 
-Defined in: src/query/index.ts:59
+Defined in: [src/query/index.ts:99](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L99)
 
-MongoDB-style projection specification
+MongoDB-style projection specification.
 - Array of field names: ['name', 'age'] - include only these fields
 - Object with 1 values: { name: 1, age: 1 } - include only these fields
 - Object with 0 values: { password: 0 } - exclude these fields

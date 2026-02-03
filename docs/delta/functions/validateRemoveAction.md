@@ -8,7 +8,7 @@
 
 > **validateRemoveAction**(`action`): `object`
 
-Defined in: src/delta/index.ts:3928
+Defined in: [src/delta/index.ts:1055](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L1055)
 
 Validate a RemoveAction
 
@@ -16,7 +16,7 @@ Validate a RemoveAction
 
 ### action
 
-[`RemoveAction`](../interfaces/RemoveAction.md)
+[`RemoveAction`](../../index/interfaces/RemoveAction.md)
 
 ## Returns
 

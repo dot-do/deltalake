@@ -6,7 +6,7 @@
 
 # Class: AbortError
 
-Defined in: src/delta/retry.ts:144
+Defined in: [src/delta/retry.ts:144](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L144)
 
 Custom error class for abort operations
 
@@ -20,7 +20,7 @@ Custom error class for abort operations
 
 > **new AbortError**(`message`): `AbortError`
 
-Defined in: src/delta/retry.ts:147
+Defined in: [src/delta/retry.ts:147](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L147)
 
 #### Parameters
 
@@ -42,7 +42,7 @@ Defined in: src/delta/retry.ts:147
 
 > **name**: `string` = `'AbortError'`
 
-Defined in: src/delta/retry.ts:145
+Defined in: [src/delta/retry.ts:145](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L145)
 
 #### Overrides
 

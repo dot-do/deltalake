@@ -8,7 +8,7 @@
 
 > **parseStorageUrl**(`url`): [`ParsedStorageUrl`](../interfaces/ParsedStorageUrl.md)
 
-Defined in: src/storage/index.ts:419
+Defined in: [src/storage/index.ts:490](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L490)
 
 Parse a storage URL/path and extract configuration.
 

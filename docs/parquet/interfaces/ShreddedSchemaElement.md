@@ -6,7 +6,7 @@
 
 # Interface: ShreddedSchemaElement
 
-Defined in: src/parquet/index.ts:231
+Defined in: [src/parquet/index.ts:259](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L259)
 
 Schema element from hyparquet for shredded columns
 
@@ -16,7 +16,7 @@ Schema element from hyparquet for shredded columns
 
 > **name**: `string`
 
-Defined in: src/parquet/index.ts:232
+Defined in: [src/parquet/index.ts:260](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L260)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: src/parquet/index.ts:232
 
 > `optional` **type**: `string`
 
-Defined in: src/parquet/index.ts:233
+Defined in: [src/parquet/index.ts:261](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L261)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: src/parquet/index.ts:233
 
 > `optional` **repetition\_type**: `"OPTIONAL"` \| `"REQUIRED"` \| `"REPEATED"`
 
-Defined in: src/parquet/index.ts:234
+Defined in: [src/parquet/index.ts:262](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L262)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: src/parquet/index.ts:234
 
 > `optional` **num\_children**: `number`
 
-Defined in: src/parquet/index.ts:235
+Defined in: [src/parquet/index.ts:263](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L263)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: src/parquet/index.ts:235
 
 > `optional` **converted\_type**: `string`
 
-Defined in: src/parquet/index.ts:236
+Defined in: [src/parquet/index.ts:264](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L264)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: src/parquet/index.ts:236
 
 > `optional` **logical\_type**: `object`
 
-Defined in: src/parquet/index.ts:237
+Defined in: [src/parquet/index.ts:265](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/index.ts#L265)
 
 #### type
 

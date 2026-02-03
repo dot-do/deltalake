@@ -8,7 +8,7 @@
 
 > **getNestedValue**(`obj`, `path`): `unknown`
 
-Defined in: src/query/index.ts:172
+Defined in: [src/query/index.ts:312](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L312)
 
 Get a value from an object using a dot-notation path.
 Optimized for common case of non-nested paths.

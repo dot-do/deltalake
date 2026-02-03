@@ -8,7 +8,7 @@
 
 > **formatBytes**(`bytes`): `string`
 
-Defined in: src/delta/vacuum.ts:350
+Defined in: [src/delta/vacuum.ts:360](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/vacuum.ts#L360)
 
 Utility function to format bytes as human-readable string.
 

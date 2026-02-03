@@ -6,7 +6,7 @@
 
 # Interface: CDCReader\<T\>
 
-Defined in: src/cdc/index.ts:154
+Defined in: [src/cdc/index.ts:204](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L204)
 
 CDC Reader interface for reading changes from a Delta table.
 Provides both batch and streaming access to CDC records.
@@ -25,7 +25,7 @@ The row data type
 
 > **readByVersion**(`startVersion`, `endVersion`): `Promise`\<[`DeltaCDCRecord`](DeltaCDCRecord.md)\<`T`\>[]\>
 
-Defined in: src/cdc/index.ts:159
+Defined in: [src/cdc/index.ts:209](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L209)
 
 Read changes between two versions (inclusive).
 
@@ -53,7 +53,7 @@ If version range is invalid or table not found
 
 > **readByTimestamp**(`startTime`, `endTime`): `Promise`\<[`DeltaCDCRecord`](DeltaCDCRecord.md)\<`T`\>[]\>
 
-Defined in: src/cdc/index.ts:165
+Defined in: [src/cdc/index.ts:215](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L215)
 
 Read changes within a time range (inclusive).
 
@@ -81,7 +81,7 @@ If time range is invalid
 
 > **subscribe**(`handler`, `options?`): () => `void`
 
-Defined in: src/cdc/index.ts:173
+Defined in: [src/cdc/index.ts:223](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/cdc/index.ts#L223)
 
 Subscribe to changes as they occur.
 

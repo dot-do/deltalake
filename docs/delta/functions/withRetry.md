@@ -10,7 +10,7 @@
 
 > **withRetry**\<`T`\>(`fn`, `config?`): `Promise`\<[`RetryResultWithMetrics`](../interfaces/RetryResultWithMetrics.md)\<`T`\>\>
 
-Defined in: src/delta/retry.ts:243
+Defined in: [src/delta/retry.ts:243](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L243)
 
 Wrap a function with retry logic using exponential backoff
 
@@ -72,7 +72,7 @@ console.log(`Succeeded after ${metrics.attempts} attempts`)
 
 > **withRetry**\<`T`\>(`fn`, `config?`): `Promise`\<`T`\>
 
-Defined in: src/delta/retry.ts:248
+Defined in: [src/delta/retry.ts:248](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L248)
 
 Wrap a function with retry logic using exponential backoff
 

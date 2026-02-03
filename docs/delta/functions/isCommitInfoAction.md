@@ -8,7 +8,7 @@
 
 > **isCommitInfoAction**(`action`): `action is CommitInfoAction`
 
-Defined in: src/delta/index.ts:3730
+Defined in: [src/delta/validators.ts:159](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/validators.ts#L159)
 
 Type guard for CommitInfoAction
 

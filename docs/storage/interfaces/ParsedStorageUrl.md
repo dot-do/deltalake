@@ -6,7 +6,7 @@
 
 # Interface: ParsedStorageUrl
 
-Defined in: src/storage/index.ts:377
+Defined in: [src/storage/index.ts:446](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L446)
 
 Parsed storage URL result.
 Contains the storage type and extracted configuration from the URL.
@@ -17,7 +17,7 @@ Contains the storage type and extracted configuration from the URL.
 
 > **type**: `"s3"` \| `"filesystem"` \| `"r2"` \| `"memory"`
 
-Defined in: src/storage/index.ts:379
+Defined in: [src/storage/index.ts:448](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L448)
 
 Detected storage type
 
@@ -27,7 +27,7 @@ Detected storage type
 
 > **path**: `string`
 
-Defined in: src/storage/index.ts:381
+Defined in: [src/storage/index.ts:450](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L450)
 
 Path within the storage (for filesystem, bucket prefix for cloud storage)
 
@@ -37,7 +37,7 @@ Path within the storage (for filesystem, bucket prefix for cloud storage)
 
 > `optional` **bucket**: `string`
 
-Defined in: src/storage/index.ts:383
+Defined in: [src/storage/index.ts:452](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L452)
 
 Bucket name (for s3:// and r2:// URLs)
 
@@ -47,6 +47,6 @@ Bucket name (for s3:// and r2:// URLs)
 
 > `optional` **region**: `string`
 
-Defined in: src/storage/index.ts:385
+Defined in: [src/storage/index.ts:454](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L454)
 
 AWS region (for s3:// URLs, extracted from hostname or defaulted to us-east-1)

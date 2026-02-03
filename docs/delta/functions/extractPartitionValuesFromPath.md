@@ -8,7 +8,7 @@
 
 > **extractPartitionValuesFromPath**(`filePath`): `Record`\<`string`, `string`\>
 
-Defined in: src/delta/index.ts:493
+Defined in: [src/delta/index.ts:601](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L601)
 
 Extract partition values from a file path.
 

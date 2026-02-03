@@ -6,7 +6,7 @@
 
 # Interface: RetryResultWithMetrics\<T\>
 
-Defined in: src/delta/retry.ts:116
+Defined in: [src/delta/retry.ts:116](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L116)
 
 Result type when returnMetrics is true
 
@@ -22,7 +22,7 @@ Result type when returnMetrics is true
 
 > **result**: `T`
 
-Defined in: src/delta/retry.ts:117
+Defined in: [src/delta/retry.ts:117](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L117)
 
 ***
 
@@ -30,4 +30,4 @@ Defined in: src/delta/retry.ts:117
 
 > **metrics**: [`RetryMetrics`](RetryMetrics.md)
 
-Defined in: src/delta/retry.ts:118
+Defined in: [src/delta/retry.ts:118](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/retry.ts#L118)

@@ -6,7 +6,9 @@
 
 # Interface: ComparisonOperators\<T\>
 
-Defined in: src/query/index.ts:70
+Defined in: [src/query/index.ts:117](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L117)
+
+MongoDB-style comparison operators.
 
 ## Type Parameters
 
@@ -20,7 +22,7 @@ Defined in: src/query/index.ts:70
 
 > `optional` **$eq**: `T`
 
-Defined in: src/query/index.ts:71
+Defined in: [src/query/index.ts:118](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L118)
 
 ***
 
@@ -28,7 +30,7 @@ Defined in: src/query/index.ts:71
 
 > `optional` **$ne**: `T`
 
-Defined in: src/query/index.ts:72
+Defined in: [src/query/index.ts:119](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L119)
 
 ***
 
@@ -36,7 +38,7 @@ Defined in: src/query/index.ts:72
 
 > `optional` **$gt**: `T`
 
-Defined in: src/query/index.ts:73
+Defined in: [src/query/index.ts:120](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L120)
 
 ***
 
@@ -44,7 +46,7 @@ Defined in: src/query/index.ts:73
 
 > `optional` **$gte**: `T`
 
-Defined in: src/query/index.ts:74
+Defined in: [src/query/index.ts:121](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L121)
 
 ***
 
@@ -52,7 +54,7 @@ Defined in: src/query/index.ts:74
 
 > `optional` **$lt**: `T`
 
-Defined in: src/query/index.ts:75
+Defined in: [src/query/index.ts:122](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L122)
 
 ***
 
@@ -60,7 +62,7 @@ Defined in: src/query/index.ts:75
 
 > `optional` **$lte**: `T`
 
-Defined in: src/query/index.ts:76
+Defined in: [src/query/index.ts:123](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L123)
 
 ***
 
@@ -68,7 +70,7 @@ Defined in: src/query/index.ts:76
 
 > `optional` **$in**: `T`[]
 
-Defined in: src/query/index.ts:77
+Defined in: [src/query/index.ts:124](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L124)
 
 ***
 
@@ -76,7 +78,7 @@ Defined in: src/query/index.ts:77
 
 > `optional` **$nin**: `T`[]
 
-Defined in: src/query/index.ts:78
+Defined in: [src/query/index.ts:125](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L125)
 
 ***
 
@@ -84,7 +86,7 @@ Defined in: src/query/index.ts:78
 
 > `optional` **$exists**: `boolean`
 
-Defined in: src/query/index.ts:79
+Defined in: [src/query/index.ts:126](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L126)
 
 ***
 
@@ -92,7 +94,7 @@ Defined in: src/query/index.ts:79
 
 > `optional` **$type**: `string`
 
-Defined in: src/query/index.ts:80
+Defined in: [src/query/index.ts:127](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L127)
 
 ***
 
@@ -100,4 +102,4 @@ Defined in: src/query/index.ts:80
 
 > `optional` **$regex**: `string` \| `RegExp`
 
-Defined in: src/query/index.ts:81
+Defined in: [src/query/index.ts:128](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L128)

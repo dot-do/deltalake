@@ -6,7 +6,7 @@
 
 # Interface: RowGroupStats
 
-Defined in: src/parquet/streaming-writer.ts:89
+Defined in: [src/parquet/streaming-writer.ts:102](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L102)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: src/parquet/streaming-writer.ts:89
 
 > **numRows**: `number`
 
-Defined in: src/parquet/streaming-writer.ts:90
+Defined in: [src/parquet/streaming-writer.ts:103](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L103)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: src/parquet/streaming-writer.ts:90
 
 > **fileOffset**: `number`
 
-Defined in: src/parquet/streaming-writer.ts:91
+Defined in: [src/parquet/streaming-writer.ts:104](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L104)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: src/parquet/streaming-writer.ts:91
 
 > **compressedSize**: `number`
 
-Defined in: src/parquet/streaming-writer.ts:92
+Defined in: [src/parquet/streaming-writer.ts:105](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L105)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: src/parquet/streaming-writer.ts:92
 
 > **totalUncompressedSize**: `number`
 
-Defined in: src/parquet/streaming-writer.ts:93
+Defined in: [src/parquet/streaming-writer.ts:106](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L106)
 
 ***
 
@@ -46,4 +46,4 @@ Defined in: src/parquet/streaming-writer.ts:93
 
 > **columnStats**: `Map`\<`string`, [`ColumnStats`](ColumnStats.md)\>
 
-Defined in: src/parquet/streaming-writer.ts:94
+Defined in: [src/parquet/streaming-writer.ts:107](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L107)

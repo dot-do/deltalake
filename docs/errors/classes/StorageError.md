@@ -6,7 +6,7 @@
 
 # Class: StorageError
 
-Defined in: src/errors.ts:78
+Defined in: [src/errors.ts:82](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L82)
 
 Error thrown when storage operations fail.
 Base class for all storage-related errors.
@@ -27,7 +27,7 @@ Base class for all storage-related errors.
 
 > **new StorageError**(`message`, `path`, `operation`, `cause?`, `code?`): `StorageError`
 
-Defined in: src/errors.ts:85
+Defined in: [src/errors.ts:89](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L89)
 
 #### Parameters
 
@@ -65,7 +65,7 @@ Defined in: src/errors.ts:85
 
 > `readonly` **code**: `string`
 
-Defined in: src/errors.ts:49
+Defined in: [src/errors.ts:51](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L51)
 
 Error code for programmatic handling.
 Each error subclass defines its own set of codes.
@@ -80,7 +80,7 @@ Each error subclass defines its own set of codes.
 
 > `readonly` `optional` **cause**: `unknown`
 
-Defined in: src/errors.ts:55
+Defined in: [src/errors.ts:57](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L57)
 
 Optional underlying cause of the error.
 Useful for wrapping lower-level errors.
@@ -95,7 +95,7 @@ Useful for wrapping lower-level errors.
 
 > `readonly` **path**: `string`
 
-Defined in: src/errors.ts:80
+Defined in: [src/errors.ts:84](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L84)
 
 The storage path involved in the error
 
@@ -105,7 +105,7 @@ The storage path involved in the error
 
 > `readonly` **operation**: `string`
 
-Defined in: src/errors.ts:83
+Defined in: [src/errors.ts:87](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L87)
 
 The operation that failed (e.g., 'read', 'write', 'delete')
 

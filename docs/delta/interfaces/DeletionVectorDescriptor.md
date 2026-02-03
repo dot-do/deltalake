@@ -6,7 +6,7 @@
 
 # Interface: DeletionVectorDescriptor
 
-Defined in: src/delta/index.ts:553
+Defined in: [src/delta/types.ts:24](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L24)
 
 Descriptor for a deletion vector associated with a data file.
 
@@ -23,7 +23,7 @@ https://github.com/delta-io/delta/blob/master/PROTOCOL.md#deletion-vectors
 
 > **storageType**: `"u"` \| `"p"` \| `"i"`
 
-Defined in: src/delta/index.ts:560
+Defined in: [src/delta/types.ts:31](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L31)
 
 Storage type indicator:
 - 'u': UUID-based relative path (most common)
@@ -36,7 +36,7 @@ Storage type indicator:
 
 > **pathOrInlineDv**: `string`
 
-Defined in: src/delta/index.ts:567
+Defined in: [src/delta/types.ts:38](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L38)
 
 For storageType 'u': Base85-encoded UUID (and optional prefix)
 For storageType 'p': Absolute file path
@@ -48,7 +48,7 @@ For storageType 'i': Base85-encoded RoaringBitmap data
 
 > `optional` **offset**: `number`
 
-Defined in: src/delta/index.ts:573
+Defined in: [src/delta/types.ts:44](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L44)
 
 Byte offset within the deletion vector file where this DV's data begins.
 Only applicable for storageType 'u' and 'p'.
@@ -59,7 +59,7 @@ Only applicable for storageType 'u' and 'p'.
 
 > **sizeInBytes**: `number`
 
-Defined in: src/delta/index.ts:578
+Defined in: [src/delta/types.ts:49](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L49)
 
 Size of the serialized deletion vector in bytes (before Base85 encoding if inline).
 
@@ -69,6 +69,6 @@ Size of the serialized deletion vector in bytes (before Base85 encoding if inlin
 
 > **cardinality**: `number`
 
-Defined in: src/delta/index.ts:583
+Defined in: [src/delta/types.ts:54](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L54)
 
 Number of rows marked as deleted by this deletion vector.

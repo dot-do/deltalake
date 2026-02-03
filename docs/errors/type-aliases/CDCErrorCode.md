@@ -8,6 +8,6 @@
 
 > **CDCErrorCode** = `"INVALID_VERSION_RANGE"` \| `"INVALID_TIME_RANGE"` \| `"TABLE_NOT_FOUND"` \| `"CDC_NOT_ENABLED"` \| `"STORAGE_ERROR"` \| `"PARSE_ERROR"` \| `"EMPTY_WRITE"`
 
-Defined in: src/errors.ts:241
+Defined in: [src/errors.ts:257](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L257)
 
 CDC error codes for categorized error handling.

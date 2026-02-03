@@ -6,44 +6,44 @@
 
 # Interface: CheckpointConfig
 
-Defined in: src/delta/index.ts:816
+Defined in: [src/delta/types.ts:219](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L219)
 
 ## Properties
 
 ### checkpointInterval?
 
-> `optional` **checkpointInterval**: `number`
+> `readonly` `optional` **checkpointInterval**: `number`
 
-Defined in: src/delta/index.ts:817
+Defined in: [src/delta/types.ts:220](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L220)
 
 ***
 
 ### maxActionsPerCheckpoint?
 
-> `optional` **maxActionsPerCheckpoint**: `number`
+> `readonly` `optional` **maxActionsPerCheckpoint**: `number`
 
-Defined in: src/delta/index.ts:818
+Defined in: [src/delta/types.ts:221](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L221)
 
 ***
 
 ### checkpointRetentionMs?
 
-> `optional` **checkpointRetentionMs**: `number`
+> `readonly` `optional` **checkpointRetentionMs**: `number`
 
-Defined in: src/delta/index.ts:819
+Defined in: [src/delta/types.ts:222](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L222)
 
 ***
 
 ### numRetainedCheckpoints?
 
-> `optional` **numRetainedCheckpoints**: `number`
+> `readonly` `optional` **numRetainedCheckpoints**: `number`
 
-Defined in: src/delta/index.ts:820
+Defined in: [src/delta/types.ts:223](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L223)
 
 ***
 
 ### maxCheckpointSizeBytes?
 
-> `optional` **maxCheckpointSizeBytes**: `number`
+> `readonly` `optional` **maxCheckpointSizeBytes**: `number`
 
-Defined in: src/delta/index.ts:821
+Defined in: [src/delta/types.ts:224](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/types.ts#L224)

@@ -313,6 +313,46 @@ Key dependencies that ensure Workers compatibility:
 - **hyparquet**: Pure JavaScript Parquet reader/writer (no native bindings)
 - No dependencies on `fs`, `path`, or other Node.js-specific modules in the core library
 
+## Known Limitations
+
+### Write Lock Scope (Single-Instance Only)
+
+The conditional write mechanism (`writeConditional()`) uses in-memory locks to prevent concurrent writes to the same file. **These locks only work within a single process/instance.**
+
+In distributed deployments (multiple Workers, multiple Node.js processes, multiple servers), the locks provide NO coordination. Concurrent writes from different instances will:
+
+1. Both acquire their local lock (no contention)
+2. Both read the current version
+3. Both attempt to write
+4. One will succeed, one will fail with `VersionMismatchError`
+
+This is **optimistic concurrency control** - conflicts are detected and rejected, but not prevented.
+
+#### Recommendations for Distributed Deployments
+
+1. **Single-writer design**: Route all writes for a given table to the same instance
+2. **External locking**: Use Redis, DynamoDB, or similar for distributed coordination
+3. **Retry on conflict**: Catch `VersionMismatchError` and retry with exponential backoff
+4. **Accept occasional conflicts**: For low-write-frequency tables, conflicts may be rare enough to handle via retries
+
+```typescript
+// Example: Retry on version conflict
+async function writeWithRetry(table, data, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      await table.write(data)
+      return
+    } catch (e) {
+      if (e instanceof VersionMismatchError && i < maxRetries - 1) {
+        await sleep(Math.pow(2, i) * 100) // Exponential backoff
+        continue
+      }
+      throw e
+    }
+  }
+}
+```
+
 ## Design Principles
 
 1. **Simple Local Development**: In Node.js, works without configuration by defaulting to filesystem storage

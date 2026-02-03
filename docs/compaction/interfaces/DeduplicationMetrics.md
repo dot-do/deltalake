@@ -6,7 +6,7 @@
 
 # Interface: DeduplicationMetrics
 
-Defined in: src/compaction/index.ts:189
+Defined in: [src/compaction/index.ts:262](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L262)
 
 Metrics returned from deduplication operation
 
@@ -16,7 +16,7 @@ Metrics returned from deduplication operation
 
 > **rowsBefore**: `number`
 
-Defined in: src/compaction/index.ts:191
+Defined in: [src/compaction/index.ts:264](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L264)
 
 Number of rows before deduplication
 
@@ -26,7 +26,7 @@ Number of rows before deduplication
 
 > **rowsAfter**: `number`
 
-Defined in: src/compaction/index.ts:194
+Defined in: [src/compaction/index.ts:267](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L267)
 
 Number of rows after deduplication
 
@@ -36,7 +36,7 @@ Number of rows after deduplication
 
 > **duplicatesRemoved**: `number`
 
-Defined in: src/compaction/index.ts:197
+Defined in: [src/compaction/index.ts:270](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L270)
 
 Number of duplicate rows removed
 
@@ -46,7 +46,7 @@ Number of duplicate rows removed
 
 > `optional` **exactDuplicatesRemoved**: `number`
 
-Defined in: src/compaction/index.ts:200
+Defined in: [src/compaction/index.ts:273](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L273)
 
 Number of exact duplicates removed (when exactDuplicates=true)
 
@@ -56,7 +56,7 @@ Number of exact duplicates removed (when exactDuplicates=true)
 
 > **deduplicationRatio**: `number`
 
-Defined in: src/compaction/index.ts:203
+Defined in: [src/compaction/index.ts:276](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L276)
 
 Ratio of duplicates to total rows
 
@@ -66,7 +66,7 @@ Ratio of duplicates to total rows
 
 > `optional` **duplicateDistribution**: `Record`\<`number`, `number`\>
 
-Defined in: src/compaction/index.ts:206
+Defined in: [src/compaction/index.ts:279](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L279)
 
 Distribution of duplicate counts per key
 
@@ -76,6 +76,6 @@ Distribution of duplicate counts per key
 
 > `optional` **maxDuplicatesPerKey**: `number`
 
-Defined in: src/compaction/index.ts:209
+Defined in: [src/compaction/index.ts:282](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/compaction/index.ts#L282)
 
 Maximum duplicates found for any single key

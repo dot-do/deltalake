@@ -8,7 +8,7 @@
 
 > **z85Decode**(`encoded`): `Uint8Array`
 
-Defined in: src/delta/index.ts:115
+Defined in: [src/delta/index.ts:163](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L163)
 
 Decode a Z85-encoded string to bytes.
 

@@ -8,7 +8,7 @@
 
 > **isAddAction**(`action`): `action is AddAction`
 
-Defined in: src/delta/index.ts:3690
+Defined in: [src/delta/validators.ts:119](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/validators.ts#L119)
 
 Type guard for AddAction
 

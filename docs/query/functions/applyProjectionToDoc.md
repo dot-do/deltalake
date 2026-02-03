@@ -8,7 +8,7 @@
 
 > **applyProjectionToDoc**\<`T`\>(`doc`, `projection`): `Partial`\<`T`\>
 
-Defined in: src/query/index.ts:481
+Defined in: [src/query/index.ts:768](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/query/index.ts#L768)
 
 Apply a projection to a single document
 

@@ -8,7 +8,7 @@
 
 > **formatVersion**(`version`): `string`
 
-Defined in: src/delta/index.ts:463
+Defined in: [src/delta/index.ts:571](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L571)
 
 Format version number as 20-digit zero-padded string.
 

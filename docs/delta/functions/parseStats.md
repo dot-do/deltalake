@@ -6,9 +6,9 @@
 
 # Function: parseStats()
 
-> **parseStats**(`statsJson`): [`FileStats`](../interfaces/FileStats.md)
+> **parseStats**(`statsJson`): [`FileStats`](../../index/interfaces/FileStats.md)
 
-Defined in: src/delta/index.ts:3957
+Defined in: [src/delta/index.ts:1084](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L1084)
 
 Parse stats JSON string from AddAction
 
@@ -20,4 +20,4 @@ Parse stats JSON string from AddAction
 
 ## Returns
 
-[`FileStats`](../interfaces/FileStats.md)
+[`FileStats`](../../index/interfaces/FileStats.md)

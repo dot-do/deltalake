@@ -6,7 +6,7 @@
 
 # Interface: WriteResult
 
-Defined in: src/parquet/streaming-writer.ts:107
+Defined in: [src/parquet/streaming-writer.ts:120](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L120)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: src/parquet/streaming-writer.ts:107
 
 > **buffer**: `ArrayBuffer`
 
-Defined in: src/parquet/streaming-writer.ts:108
+Defined in: [src/parquet/streaming-writer.ts:121](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L121)
 
 ***
 
@@ -22,7 +22,7 @@ Defined in: src/parquet/streaming-writer.ts:108
 
 > **totalRows**: `number`
 
-Defined in: src/parquet/streaming-writer.ts:109
+Defined in: [src/parquet/streaming-writer.ts:122](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L122)
 
 ***
 
@@ -30,7 +30,7 @@ Defined in: src/parquet/streaming-writer.ts:109
 
 > **rowGroups**: [`RowGroupStats`](RowGroupStats.md)[]
 
-Defined in: src/parquet/streaming-writer.ts:110
+Defined in: [src/parquet/streaming-writer.ts:123](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L123)
 
 ***
 
@@ -38,7 +38,7 @@ Defined in: src/parquet/streaming-writer.ts:110
 
 > **zoneMaps**: [`ZoneMap`](ZoneMap.md)[][]
 
-Defined in: src/parquet/streaming-writer.ts:111
+Defined in: [src/parquet/streaming-writer.ts:124](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L124)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: src/parquet/streaming-writer.ts:111
 
 > **shreddedColumns**: `string`[]
 
-Defined in: src/parquet/streaming-writer.ts:112
+Defined in: [src/parquet/streaming-writer.ts:125](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L125)
 
 ***
 
@@ -54,7 +54,7 @@ Defined in: src/parquet/streaming-writer.ts:112
 
 > **metadata**: `WriteResultMetadata`
 
-Defined in: src/parquet/streaming-writer.ts:113
+Defined in: [src/parquet/streaming-writer.ts:126](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L126)
 
 ## Methods
 
@@ -62,7 +62,7 @@ Defined in: src/parquet/streaming-writer.ts:113
 
 > **createAsyncBuffer**(): `Promise`\<[`AsyncBuffer`](../../storage/interfaces/AsyncBuffer.md)\>
 
-Defined in: src/parquet/streaming-writer.ts:114
+Defined in: [src/parquet/streaming-writer.ts:127](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L127)
 
 #### Returns
 
@@ -74,7 +74,7 @@ Defined in: src/parquet/streaming-writer.ts:114
 
 > **readRows**(`asyncBuffer`): `Promise`\<`Record`\<`string`, `unknown`\>[]\>
 
-Defined in: src/parquet/streaming-writer.ts:115
+Defined in: [src/parquet/streaming-writer.ts:128](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L128)
 
 #### Parameters
 

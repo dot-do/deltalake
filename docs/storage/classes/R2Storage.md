@@ -6,7 +6,7 @@
 
 # Class: R2Storage
 
-Defined in: src/storage/index.ts:1018
+Defined in: [src/storage/index.ts:1115](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1115)
 
 Cloudflare R2 storage backend.
 
@@ -38,7 +38,7 @@ const storage = new R2Storage({ bucket: env.MY_BUCKET })
 
 > **new R2Storage**(`options`): `R2Storage`
 
-Defined in: src/storage/index.ts:1021
+Defined in: [src/storage/index.ts:1118](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1118)
 
 #### Parameters
 
@@ -58,7 +58,7 @@ Defined in: src/storage/index.ts:1021
 
 > **read**(`path`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Defined in: src/storage/index.ts:1023
+Defined in: [src/storage/index.ts:1141](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1141)
 
 Read the entire contents of a file.
 
@@ -90,7 +90,7 @@ If file does not exist
 
 > **write**(`path`, `data`): `Promise`\<`void`\>
 
-Defined in: src/storage/index.ts:1032
+Defined in: [src/storage/index.ts:1150](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1150)
 
 Write data to a file, creating it if it doesn't exist or overwriting if it does.
 
@@ -124,7 +124,7 @@ Promise that resolves when write is complete
 
 > **list**(`prefix`): `Promise`\<`string`[]\>
 
-Defined in: src/storage/index.ts:1036
+Defined in: [src/storage/index.ts:1154](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1154)
 
 List all files matching a prefix.
 
@@ -152,7 +152,7 @@ Promise resolving to array of file paths (not directories)
 
 > **delete**(`path`): `Promise`\<`void`\>
 
-Defined in: src/storage/index.ts:1057
+Defined in: [src/storage/index.ts:1175](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1175)
 
 Delete a file. This operation is idempotent - deleting a non-existent file
 does not throw an error.
@@ -181,7 +181,7 @@ Promise that resolves when delete is complete
 
 > **exists**(`path`): `Promise`\<`boolean`\>
 
-Defined in: src/storage/index.ts:1061
+Defined in: [src/storage/index.ts:1179](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1179)
 
 Check if a file exists.
 
@@ -209,7 +209,7 @@ Promise resolving to true if file exists, false otherwise
 
 > **stat**(`path`): `Promise`\<[`FileStat`](../interfaces/FileStat.md) \| `null`\>
 
-Defined in: src/storage/index.ts:1066
+Defined in: [src/storage/index.ts:1184](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1184)
 
 Get file metadata (size, last modified time, optional etag).
 
@@ -237,7 +237,7 @@ Promise resolving to FileStat or null if file doesn't exist
 
 > **readRange**(`path`, `start`, `end`): `Promise`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Defined in: src/storage/index.ts:1078
+Defined in: [src/storage/index.ts:1196](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1196)
 
 Read a byte range from a file. Essential for efficient Parquet file reading
 where metadata is stored at the end of the file.
@@ -282,7 +282,7 @@ If file does not exist
 
 > **getVersion**(`path`): `Promise`\<`string` \| `null`\>
 
-Defined in: src/storage/index.ts:1090
+Defined in: [src/storage/index.ts:1208](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1208)
 
 Get the current version of a file.
 
@@ -316,7 +316,7 @@ Promise resolving to version string, or null if file doesn't exist
 
 > **writeConditional**(`path`, `data`, `expectedVersion`): `Promise`\<`string`\>
 
-Defined in: src/storage/index.ts:1098
+Defined in: [src/storage/index.ts:1216](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/storage/index.ts#L1216)
 
 Conditionally write a file only if the version matches.
 This enables optimistic concurrency control for Delta Lake transactions.
@@ -324,6 +324,14 @@ This enables optimistic concurrency control for Delta Lake transactions.
 Use cases:
 - `expectedVersion = null`: Create file only if it doesn't exist
 - `expectedVersion = "version"`: Update file only if version matches
+
+## Concurrency Note
+
+The internal write locks are **process-local only**. For distributed
+deployments, concurrent writes from different processes/instances may
+result in VersionMismatchError when the version check fails. This is
+the expected behavior for optimistic concurrency control - callers
+should retry with the new version on conflict.
 
 #### Parameters
 

@@ -6,7 +6,7 @@
 
 # Class: StreamingParquetWriter
 
-Defined in: src/parquet/streaming-writer.ts:165
+Defined in: [src/parquet/streaming-writer.ts:178](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L178)
 
 ## Constructors
 
@@ -14,7 +14,7 @@ Defined in: src/parquet/streaming-writer.ts:165
 
 > **new StreamingParquetWriter**(`options?`): `StreamingParquetWriter`
 
-Defined in: src/parquet/streaming-writer.ts:185
+Defined in: [src/parquet/streaming-writer.ts:198](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L198)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: src/parquet/streaming-writer.ts:185
 
 > **get** **options**(): [`StreamingParquetWriterOptions`](../interfaces/StreamingParquetWriterOptions.md)
 
-Defined in: src/parquet/streaming-writer.ts:201
+Defined in: [src/parquet/streaming-writer.ts:214](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L214)
 
 ##### Returns
 
@@ -48,7 +48,7 @@ Defined in: src/parquet/streaming-writer.ts:201
 
 > **get** **bufferedRowCount**(): `number`
 
-Defined in: src/parquet/streaming-writer.ts:209
+Defined in: [src/parquet/streaming-writer.ts:222](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L222)
 
 ##### Returns
 
@@ -62,7 +62,7 @@ Defined in: src/parquet/streaming-writer.ts:209
 
 > **get** **completedRowGroupCount**(): `number`
 
-Defined in: src/parquet/streaming-writer.ts:213
+Defined in: [src/parquet/streaming-writer.ts:226](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L226)
 
 ##### Returns
 
@@ -76,7 +76,7 @@ Defined in: src/parquet/streaming-writer.ts:213
 
 > **get** **totalRowsWritten**(): `number`
 
-Defined in: src/parquet/streaming-writer.ts:217
+Defined in: [src/parquet/streaming-writer.ts:230](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L230)
 
 ##### Returns
 
@@ -90,7 +90,7 @@ Defined in: src/parquet/streaming-writer.ts:217
 
 > **get** **bytesWritten**(): `number`
 
-Defined in: src/parquet/streaming-writer.ts:221
+Defined in: [src/parquet/streaming-writer.ts:234](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L234)
 
 ##### Returns
 
@@ -104,7 +104,7 @@ Defined in: src/parquet/streaming-writer.ts:221
 
 > **get** **inferredSchema**(): [`ParquetSchema`](../interfaces/ParquetSchema.md) \| `null`
 
-Defined in: src/parquet/streaming-writer.ts:225
+Defined in: [src/parquet/streaming-writer.ts:238](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L238)
 
 ##### Returns
 
@@ -118,7 +118,7 @@ Defined in: src/parquet/streaming-writer.ts:225
 
 > **get** **schema**(): [`ParquetSchema`](../interfaces/ParquetSchema.md) \| `null`
 
-Defined in: src/parquet/streaming-writer.ts:229
+Defined in: [src/parquet/streaming-writer.ts:242](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L242)
 
 ##### Returns
 
@@ -132,7 +132,7 @@ Defined in: src/parquet/streaming-writer.ts:229
 
 > **get** **isAborted**(): `boolean`
 
-Defined in: src/parquet/streaming-writer.ts:233
+Defined in: [src/parquet/streaming-writer.ts:246](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L246)
 
 ##### Returns
 
@@ -146,7 +146,7 @@ Defined in: src/parquet/streaming-writer.ts:233
 
 > **get** **bufferPoolStats**(): [`BufferPoolStats`](../interfaces/BufferPoolStats.md)
 
-Defined in: src/parquet/streaming-writer.ts:237
+Defined in: [src/parquet/streaming-writer.ts:250](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L250)
 
 ##### Returns
 
@@ -158,7 +158,7 @@ Defined in: src/parquet/streaming-writer.ts:237
 
 > **writeRow**(`row`): `Promise`\<`void`\>
 
-Defined in: src/parquet/streaming-writer.ts:245
+Defined in: [src/parquet/streaming-writer.ts:258](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L258)
 
 #### Parameters
 
@@ -176,7 +176,7 @@ Defined in: src/parquet/streaming-writer.ts:245
 
 > **finish**(): `Promise`\<[`WriteResult`](../interfaces/WriteResult.md)\>
 
-Defined in: src/parquet/streaming-writer.ts:269
+Defined in: [src/parquet/streaming-writer.ts:282](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L282)
 
 #### Returns
 
@@ -188,7 +188,7 @@ Defined in: src/parquet/streaming-writer.ts:269
 
 > **abort**(): `Promise`\<`void`\>
 
-Defined in: src/parquet/streaming-writer.ts:298
+Defined in: [src/parquet/streaming-writer.ts:311](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/parquet/streaming-writer.ts#L311)
 
 #### Returns
 

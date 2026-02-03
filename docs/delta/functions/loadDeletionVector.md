@@ -8,7 +8,7 @@
 
 > **loadDeletionVector**(`storage`, `tablePath`, `dv`): `Promise`\<`Set`\<`number`\>\>
 
-Defined in: src/delta/index.ts:409
+Defined in: [src/delta/index.ts:517](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L517)
 
 Load and parse a deletion vector from storage.
 

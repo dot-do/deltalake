@@ -6,7 +6,7 @@
 
 # Class: ValidationError
 
-Defined in: src/errors.ts:304
+Defined in: [src/errors.ts:324](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L324)
 
 Error thrown when input validation fails.
 
@@ -36,7 +36,7 @@ try {
 
 > **new ValidationError**(`message`, `field?`, `value?`): `ValidationError`
 
-Defined in: src/errors.ts:311
+Defined in: [src/errors.ts:331](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L331)
 
 #### Parameters
 
@@ -66,7 +66,7 @@ Defined in: src/errors.ts:311
 
 > `readonly` **code**: `string`
 
-Defined in: src/errors.ts:49
+Defined in: [src/errors.ts:51](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L51)
 
 Error code for programmatic handling.
 Each error subclass defines its own set of codes.
@@ -81,7 +81,7 @@ Each error subclass defines its own set of codes.
 
 > `readonly` `optional` **cause**: `unknown`
 
-Defined in: src/errors.ts:55
+Defined in: [src/errors.ts:57](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L57)
 
 Optional underlying cause of the error.
 Useful for wrapping lower-level errors.
@@ -96,7 +96,7 @@ Useful for wrapping lower-level errors.
 
 > `readonly` `optional` **field**: `string`
 
-Defined in: src/errors.ts:306
+Defined in: [src/errors.ts:326](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L326)
 
 The field or parameter that failed validation (optional)
 
@@ -106,7 +106,7 @@ The field or parameter that failed validation (optional)
 
 > `readonly` `optional` **value**: `unknown`
 
-Defined in: src/errors.ts:309
+Defined in: [src/errors.ts:329](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L329)
 
 The invalid value that was provided (optional)
 

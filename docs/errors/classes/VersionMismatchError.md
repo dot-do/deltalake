@@ -6,7 +6,7 @@
 
 # Class: VersionMismatchError
 
-Defined in: src/errors.ts:120
+Defined in: [src/errors.ts:128](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L128)
 
 Error thrown when a conditional write fails due to version mismatch.
 This indicates another writer has modified the file since we read it.
@@ -35,7 +35,7 @@ try {
 
 > **new VersionMismatchError**(`path`, `expectedVersion`, `actualVersion`): `VersionMismatchError`
 
-Defined in: src/errors.ts:127
+Defined in: [src/errors.ts:135](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L135)
 
 #### Parameters
 
@@ -65,7 +65,7 @@ Defined in: src/errors.ts:127
 
 > `readonly` **code**: `string`
 
-Defined in: src/errors.ts:49
+Defined in: [src/errors.ts:51](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L51)
 
 Error code for programmatic handling.
 Each error subclass defines its own set of codes.
@@ -80,7 +80,7 @@ Each error subclass defines its own set of codes.
 
 > `readonly` `optional` **cause**: `unknown`
 
-Defined in: src/errors.ts:55
+Defined in: [src/errors.ts:57](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L57)
 
 Optional underlying cause of the error.
 Useful for wrapping lower-level errors.
@@ -95,7 +95,7 @@ Useful for wrapping lower-level errors.
 
 > `readonly` **path**: `string`
 
-Defined in: src/errors.ts:80
+Defined in: [src/errors.ts:84](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L84)
 
 The storage path involved in the error
 
@@ -109,7 +109,7 @@ The storage path involved in the error
 
 > `readonly` **operation**: `string`
 
-Defined in: src/errors.ts:83
+Defined in: [src/errors.ts:87](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L87)
 
 The operation that failed (e.g., 'read', 'write', 'delete')
 
@@ -123,7 +123,7 @@ The operation that failed (e.g., 'read', 'write', 'delete')
 
 > `readonly` **expectedVersion**: `string` \| `null`
 
-Defined in: src/errors.ts:122
+Defined in: [src/errors.ts:130](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L130)
 
 The version we expected
 
@@ -133,7 +133,7 @@ The version we expected
 
 > `readonly` **actualVersion**: `string` \| `null`
 
-Defined in: src/errors.ts:125
+Defined in: [src/errors.ts:133](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L133)
 
 The actual version found
 

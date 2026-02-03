@@ -8,7 +8,7 @@
 
 > **isProtocolAction**(`action`): `action is ProtocolAction`
 
-Defined in: src/delta/index.ts:3720
+Defined in: [src/delta/validators.ts:149](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/validators.ts#L149)
 
 Type guard for ProtocolAction
 

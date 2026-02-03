@@ -8,7 +8,7 @@
 
 > **isCDCError**(`error`): `error is CDCError`
 
-Defined in: src/errors.ts:349
+Defined in: [src/errors.ts:377](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/errors.ts#L377)
 
 Check if an error is a CDCError.
 

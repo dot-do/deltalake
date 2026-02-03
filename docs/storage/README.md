@@ -21,6 +21,7 @@
 - [S3Credentials](interfaces/S3Credentials.md)
 - [ParsedStorageUrl](interfaces/ParsedStorageUrl.md)
 - [S3ClientLike](interfaces/S3ClientLike.md)
+- [S3StorageOptions](interfaces/S3StorageOptions.md)
 - [LatencyConfig](interfaces/LatencyConfig.md)
 - [MemoryStorageOptions](interfaces/MemoryStorageOptions.md)
 - [OperationRecord](interfaces/OperationRecord.md)
@@ -61,3 +62,9 @@ Re-exports [VersionMismatchError](../errors/classes/VersionMismatchError.md)
 ### S3Error
 
 Re-exports [S3Error](../errors/classes/S3Error.md)
+
+***
+
+### ValidationError
+
+Re-exports [ValidationError](../errors/classes/ValidationError.md)

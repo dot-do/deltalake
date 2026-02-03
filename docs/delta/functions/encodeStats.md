@@ -8,7 +8,7 @@
 
 > **encodeStats**(`stats`): `string`
 
-Defined in: src/delta/index.ts:3970
+Defined in: [src/delta/index.ts:1097](https://github.com/dot-do/deltalake/blob/d874c146f352ad9fbb34fe5d2e0ac828849a01ca/src/delta/index.ts#L1097)
 
 Encode stats object to JSON string for AddAction
 
@@ -16,7 +16,7 @@ Encode stats object to JSON string for AddAction
 
 ### stats
 
-[`FileStats`](../interfaces/FileStats.md)
+[`FileStats`](../../index/interfaces/FileStats.md)
 
 ## Returns
 
