@@ -410,3 +410,21 @@ export function isRetryableError(error: unknown): boolean {
   if (error.name === 'ConcurrencyError') return true
   return false
 }
+
+/**
+ * Check if an error is a FileNotFoundError.
+ *
+ * @public
+ */
+export function isFileNotFoundError(error: unknown): error is FileNotFoundError {
+  return error instanceof FileNotFoundError
+}
+
+/**
+ * Check if an error is a VersionMismatchError.
+ *
+ * @public
+ */
+export function isVersionMismatchError(error: unknown): error is VersionMismatchError {
+  return error instanceof VersionMismatchError
+}

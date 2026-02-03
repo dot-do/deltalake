@@ -62,6 +62,7 @@ import {
 } from '../utils/index.js'
 import { isValidDeltaAction, isValidFileStats } from './validators.js'
 import type { DeletionVectorDescriptor } from './types.js'
+import { loadDeletionVector } from './deletion-vectors.js'
 
 // =============================================================================
 // LOCAL HELPER FUNCTIONS (to avoid circular dependency with index.js)
@@ -106,229 +107,6 @@ function extractPartitionValuesFromPath(filePath: string): Record<string, string
   }
 
   return partitions
-}
-
-/**
- * Z85 character set used by Delta Lake for encoding deletion vector UUIDs.
- */
-const Z85_CHARS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-:+=^!/*?&<>()[]{}@%$#'
-
-const Z85_DECODE: number[] = new Array(128).fill(-1)
-for (let i = 0; i < Z85_CHARS.length; i++) {
-  Z85_DECODE[Z85_CHARS.charCodeAt(i)] = i
-}
-
-function z85Decode(encoded: string): Uint8Array {
-  if (encoded.length % 5 !== 0) {
-    throw new ValidationError(`Z85 input length must be a multiple of 5, got ${encoded.length}`, 'encoded', encoded.length)
-  }
-
-  const outputLen = (encoded.length / 5) * 4
-  const result = new Uint8Array(outputLen)
-  let outIdx = 0
-
-  for (let i = 0; i < encoded.length; i += 5) {
-    let value = 0
-    for (let j = 0; j < 5; j++) {
-      const charCode = encoded.charCodeAt(i + j)
-      const decoded = charCode < 128 ? Z85_DECODE[charCode] : -1
-      if (decoded === undefined || decoded < 0) {
-        throw new ValidationError(`Invalid Z85 character at position ${i + j}`, 'encoded', encoded.charAt(i + j))
-      }
-      value = value * 85 + decoded
-    }
-
-    result[outIdx++] = (value >>> 24) & 0xff
-    result[outIdx++] = (value >>> 16) & 0xff
-    result[outIdx++] = (value >>> 8) & 0xff
-    result[outIdx++] = value & 0xff
-  }
-
-  return result
-}
-
-function z85DecodeUuid(pathOrInlineDv: string): string {
-  const uuidEncoded = pathOrInlineDv.slice(-20)
-  const prefix = pathOrInlineDv.slice(0, -20)
-  const bytes = z85Decode(uuidEncoded)
-  const hex = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('')
-  const uuid = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`
-  return prefix ? `${prefix}${uuid}` : uuid
-}
-
-function getDeletionVectorPath(tablePath: string, dv: DeletionVectorDescriptor): string {
-  if (dv.storageType === 'p') {
-    return dv.pathOrInlineDv
-  } else if (dv.storageType === 'u') {
-    const uuid = z85DecodeUuid(dv.pathOrInlineDv)
-    const filename = `deletion_vector_${uuid}.bin`
-    return tablePath ? `${tablePath}/${filename}` : filename
-  } else {
-    throw new ValidationError('Inline deletion vectors do not have a file path', 'storageType', dv.storageType)
-  }
-}
-
-const SERIAL_COOKIE_NO_RUNCONTAINER = 12346
-const SERIAL_COOKIE = 12347
-
-function parseRoaringBitmap(data: Uint8Array): Set<number> {
-  const deletedRows = new Set<number>()
-  if (!data || data.byteLength < 4) return deletedRows
-
-  const view = new DataView(data.buffer, data.byteOffset, data.byteLength)
-  let offset = 0
-  const magic = view.getUint32(offset, true)
-  offset += 4
-
-  if (magic !== 0x64 && magic !== 0x3a300000 && magic !== 0x303a) {
-    offset = 0
-  }
-
-  if (offset + 8 > data.byteLength) return deletedRows
-  const numBuckets = Number(view.getBigUint64(offset, true))
-  offset += 8
-
-  if (numBuckets > 1000000 || numBuckets < 0) return deletedRows
-
-  for (let bucket = 0; bucket < numBuckets; bucket++) {
-    if (offset + 4 > data.byteLength) break
-    const highBits = view.getUint32(offset, true)
-    offset += 4
-
-    const remaining = data.subarray(offset)
-    if (remaining.byteLength === 0) break
-    const { values, bytesRead } = parseRoaringBitmap32(remaining)
-    offset += bytesRead
-
-    const highOffset = highBits * 0x100000000
-    for (const lowBits of values) {
-      deletedRows.add(highOffset + lowBits)
-    }
-  }
-
-  return deletedRows
-}
-
-function parseRoaringBitmap32(data: Uint8Array): { values: number[]; bytesRead: number } {
-  const values: number[] = []
-  if (!data || data.byteLength < 4) return { values: [], bytesRead: 0 }
-
-  const view = new DataView(data.buffer, data.byteOffset, data.byteLength)
-  let offset = 0
-  const cookie = view.getUint32(offset, true)
-  offset += 4
-
-  let numContainers: number
-  let hasRunContainers = false
-  let runContainerBitset: Uint8Array | null = null
-
-  if ((cookie & 0xffff) === SERIAL_COOKIE) {
-    hasRunContainers = true
-    numContainers = ((cookie >>> 16) & 0xffff) + 1
-    const bitsetBytes = Math.ceil(numContainers / 8)
-    if (offset + bitsetBytes > data.byteLength) return { values: [], bytesRead: offset }
-    runContainerBitset = data.subarray(offset, offset + bitsetBytes)
-    offset += bitsetBytes
-  } else if (cookie === SERIAL_COOKIE_NO_RUNCONTAINER) {
-    if (offset + 4 > data.byteLength) return { values: [], bytesRead: offset }
-    numContainers = view.getUint32(offset, true)
-    offset += 4
-  } else {
-    return { values: [], bytesRead: offset }
-  }
-
-  if (numContainers === 0 || numContainers > 65536) return { values: [], bytesRead: offset }
-
-  const keys: number[] = []
-  const cardinalities: number[] = []
-  const headerSize = numContainers * 4
-  if (offset + headerSize > data.byteLength) return { values: [], bytesRead: offset }
-
-  for (let i = 0; i < numContainers; i++) {
-    keys.push(view.getUint16(offset, true))
-    offset += 2
-    cardinalities.push(view.getUint16(offset, true) + 1)
-    offset += 2
-  }
-
-  const hasOffsets = cookie === SERIAL_COOKIE_NO_RUNCONTAINER || numContainers >= 4
-  if (hasOffsets) {
-    const offsetsSize = numContainers * 4
-    if (offset + offsetsSize > data.byteLength) return { values: [], bytesRead: offset }
-    offset += offsetsSize
-  }
-
-  for (let i = 0; i < numContainers; i++) {
-    const key = keys[i]
-    if (key === undefined) continue
-    const cardinality = cardinalities[i]
-    if (cardinality === undefined) continue
-    const highBits = key << 16
-
-    const bitsetByteIndex = Math.floor(i / 8)
-    const isRunContainer = hasRunContainers && runContainerBitset && bitsetByteIndex < runContainerBitset.length && (runContainerBitset[bitsetByteIndex]! & (1 << (i % 8))) !== 0
-    const isBitsetContainer = !isRunContainer && cardinality > 4096
-
-    if (isRunContainer) {
-      if (offset + 2 > data.byteLength) break
-      const numRuns = view.getUint16(offset, true)
-      offset += 2
-      if (numRuns > 2048 || offset + numRuns * 4 > data.byteLength) break
-
-      for (let r = 0; r < numRuns; r++) {
-        const start = view.getUint16(offset, true)
-        offset += 2
-        const length = view.getUint16(offset, true) + 1
-        offset += 2
-        const safeLength = Math.min(length, 65536 - start)
-        for (let v = 0; v < safeLength; v++) {
-          values.push(highBits | (start + v))
-        }
-      }
-    } else if (isBitsetContainer) {
-      const bitsetSize = 1024 * 8
-      if (offset + bitsetSize > data.byteLength) break
-
-      for (let wordIdx = 0; wordIdx < 1024; wordIdx++) {
-        const word = view.getBigUint64(offset, true)
-        offset += 8
-        if (word === 0n) continue
-        for (let bit = 0; bit < 64; bit++) {
-          if ((word & (1n << BigInt(bit))) !== 0n) {
-            values.push(highBits | (wordIdx * 64 + bit))
-          }
-        }
-      }
-    } else {
-      const containerSize = cardinality * 2
-      if (offset + containerSize > data.byteLength) break
-      for (let j = 0; j < cardinality; j++) {
-        const lowBits = view.getUint16(offset, true)
-        offset += 2
-        values.push(highBits | lowBits)
-      }
-    }
-  }
-
-  return { values, bytesRead: offset }
-}
-
-async function loadDeletionVector(
-  storage: StorageBackend,
-  tablePath: string,
-  dv: DeletionVectorDescriptor
-): Promise<Set<number>> {
-  if (dv.storageType === 'i') {
-    const decoded = z85Decode(dv.pathOrInlineDv)
-    return parseRoaringBitmap(decoded)
-  }
-
-  const dvPath = getDeletionVectorPath(tablePath, dv)
-  const fileData = await storage.read(dvPath)
-  const startOffset = dv.offset ?? 0
-  const headerSize = 8
-  const dvData = fileData.subarray(startOffset + headerSize)
-  return parseRoaringBitmap(dvData)
 }
 
 /**
@@ -458,6 +236,7 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
   private tableSchema: InferredSchema | null = null
   private partitionColumns: string[] = []
   private metadataLoaded: boolean = false
+  private tableConfiguration: Record<string, string> = {}
 
   /**
    * Create a new DeltaTable instance.
@@ -522,6 +301,32 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
       checkpointRetentionMs: config?.checkpointRetentionMs,
       maxCheckpointSizeBytes: config?.maxCheckpointSizeBytes,
     }
+  }
+
+  /**
+   * Set table configuration properties.
+   *
+   * These properties will be included in the table metadata when the first commit is made.
+   * For example, setting `delta.enableChangeDataFeed` to `'true'` enables CDC.
+   *
+   * @param config - Configuration properties to set (values must be strings per Delta protocol)
+   *
+   * @example
+   * ```typescript
+   * table.setTableConfiguration({ 'delta.enableChangeDataFeed': 'true' })
+   * ```
+   */
+  setTableConfiguration(config: Record<string, string>): void {
+    this.tableConfiguration = { ...this.tableConfiguration, ...config }
+  }
+
+  /**
+   * Get the current table configuration.
+   *
+   * @returns The table configuration properties
+   */
+  getTableConfiguration(): Record<string, string> {
+    return { ...this.tableConfiguration }
   }
 
   /**
@@ -954,6 +759,10 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
     try {
       await this.storage.writeConditional(commitPath, new TextEncoder().encode(commitData), null)
     } catch (error) {
+      // Clear dataStore entries for files that were written before commit failed
+      // This prevents memory inconsistency where dataStore has entries for uncommitted data
+      this.clearDataStoreForActions(actions)
+
       if (error instanceof VersionMismatchError) {
         // Another writer created this version - read actual version and throw ConcurrencyError
         const actualVersion = await this.getVersionFromStorage()
@@ -1056,6 +865,7 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
 
     // Add protocol and metadata for first commit
     if (newVersion === 0) {
+      const hasConfiguration = Object.keys(this.tableConfiguration).length > 0
       actions.unshift(
         {
           protocol: DEFAULT_PROTOCOL,
@@ -1067,6 +877,7 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
             schemaString: JSON.stringify(this.schemaToParquetSchema(schema)),
             partitionColumns: partitionCols ? [...partitionCols] : [],
             createdTime: timestamp,
+            ...(hasConfiguration ? { configuration: { ...this.tableConfiguration } } : {}),
           },
         }
       )
@@ -1163,6 +974,7 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
 
     // Add protocol and metadata for first commit
     if (newVersion === 0) {
+      const hasConfiguration = Object.keys(this.tableConfiguration).length > 0
       actions.unshift(
         {
           protocol: DEFAULT_PROTOCOL,
@@ -1174,6 +986,7 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
             schemaString: JSON.stringify(this.schemaToParquetSchema(schema)),
             partitionColumns: partitionColumns ? [...partitionColumns] : [],
             createdTime: timestamp,
+            ...(hasConfiguration ? { configuration: { ...this.tableConfiguration } } : {}),
           },
         }
       )
@@ -2872,6 +2685,21 @@ export class DeltaTable<T extends Record<string, unknown> = Record<string, unkno
    */
   deleteFileRows(path: string): boolean {
     return this.dataStore.delete(path)
+  }
+
+  /**
+   * Clear dataStore entries for all add actions.
+   * Used to clean up memory when a commit fails after data was written.
+   *
+   * @internal
+   * @param actions - The Delta actions that were attempted to be committed
+   */
+  private clearDataStoreForActions(actions: DeltaAction[]): void {
+    for (const action of actions) {
+      if ('add' in action && action.add.path) {
+        this.dataStore.delete(action.add.path)
+      }
+    }
   }
 
   // =============================================================================

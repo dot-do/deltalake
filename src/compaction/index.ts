@@ -59,7 +59,7 @@
 import type { DeltaTable, DeltaAction, AddAction, RemoveAction, CompactionContext } from '../delta/index.js'
 import { formatVersion, isValidPartitionValues } from '../delta/index.js'
 import { ValidationError, StorageError } from '../errors.js'
-import { inferParquetType } from '../utils/index.js'
+import { inferParquetType, inferSchemaFromRows } from '../utils/index.js'
 import { parquetWriteBuffer, type ColumnSource, type BasicType } from '@dotdo/hyparquet-writer'
 
 // =============================================================================
@@ -434,62 +434,6 @@ function createKey(row: Record<string, unknown>, columns: readonly string[]): st
     const val = row[col]
     return val === null || val === undefined ? '__null__' : JSON.stringify(val)
   }).join('|')
-}
-
-// =============================================================================
-// PARQUET SCHEMA INFERENCE
-// =============================================================================
-
-/**
- * Infer Parquet schema from row data by examining all rows.
- *
- * This function scans all rows to:
- * 1. Collect all unique field names across all rows
- * 2. Find the first non-null value for each field to infer its type
- *
- * This approach handles sparse data where some fields may be null in early rows
- * but have values in later rows.
- *
- * @internal
- * @typeParam T - The row type
- * @param rows - Array of rows to infer schema from
- * @returns Array of field definitions with name and Parquet type
- */
-function inferSchemaFromRows<T extends Record<string, unknown>>(rows: T[]): Array<{ name: string; type: BasicType }> {
-  if (rows.length === 0) {
-    return []
-  }
-
-  // Collect all field names from all rows (handles sparse schemas)
-  const fieldNames = new Set<string>()
-  for (const row of rows) {
-    for (const key of Object.keys(row)) {
-      fieldNames.add(key)
-    }
-  }
-
-  const fields: Array<{ name: string; type: BasicType }> = []
-
-  for (const name of fieldNames) {
-    let inferredType: BasicType = 'STRING' // Default fallback for all-null columns
-
-    // Scan rows to find the first non-null value for type inference
-    for (const row of rows) {
-      const value = row[name]
-
-      if (value === null || value === undefined) {
-        continue
-      }
-
-      // Found a non-null value, infer its Parquet type
-      inferredType = inferParquetType(value)
-      break
-    }
-
-    fields.push({ name, type: inferredType })
-  }
-
-  return fields
 }
 
 /**

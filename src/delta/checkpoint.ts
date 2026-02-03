@@ -281,9 +281,40 @@ export async function createMultiPartCheckpoint(
       parts.push(currentPart)
     }
   } else {
-    // Split by action count
-    for (let i = 0; i < actions.length; i += maxActions) {
-      parts.push(actions.slice(i, i + maxActions))
+    // Split by action count, distributing ADD actions evenly using round-robin
+    // Separate metadata/protocol actions from add actions
+    const metadataProtocolActions: Record<string, unknown>[] = []
+    const addActions: Record<string, unknown>[] = []
+
+    for (const action of actions) {
+      if (action.metaData || action.protocol) {
+        metadataProtocolActions.push(action)
+      } else {
+        addActions.push(action)
+      }
+    }
+
+    // Calculate number of parts needed for add actions
+    const numParts = Math.ceil(addActions.length / maxActions)
+
+    // Initialize parts arrays
+    for (let i = 0; i < numParts; i++) {
+      parts.push([])
+    }
+
+    // Add metadata/protocol to first part
+    if (parts[0]) {
+      parts[0].push(...metadataProtocolActions)
+    }
+
+    // Distribute add actions evenly using round-robin
+    for (let i = 0; i < addActions.length; i++) {
+      const partIndex = i % numParts
+      const action = addActions[i]
+      const part = parts[partIndex]
+      if (action && part) {
+        part.push(action)
+      }
     }
   }
 

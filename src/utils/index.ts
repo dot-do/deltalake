@@ -463,3 +463,64 @@ export function inferParquetType(value: unknown): BasicType {
 
   return 'STRING' // Fallback
 }
+
+/**
+ * Infer Parquet schema from an array of row objects.
+ *
+ * Scans all rows to find the first non-null value for each field and infers
+ * the appropriate Parquet type. This handles cases where the first row might
+ * have null values for certain fields.
+ *
+ * @param rows - Array of row objects to infer schema from
+ * @returns Array of field definitions with name and Parquet BasicType
+ *
+ * @example
+ * ```typescript
+ * const rows = [
+ *   { id: '1', name: null, value: 100 },
+ *   { id: '2', name: 'Alice', value: 200 }
+ * ]
+ * const schema = inferSchemaFromRows(rows)
+ * // Returns: [
+ * //   { name: 'id', type: 'STRING' },
+ * //   { name: 'name', type: 'STRING' },
+ * //   { name: 'value', type: 'INT32' }
+ * // ]
+ * ```
+ */
+export function inferSchemaFromRows<T extends Record<string, unknown>>(rows: T[]): Array<{ name: string; type: BasicType }> {
+  if (rows.length === 0) {
+    return []
+  }
+
+  // Collect all field names from all rows (handles sparse schemas)
+  const fieldNames = new Set<string>()
+  for (const row of rows) {
+    for (const key of Object.keys(row)) {
+      fieldNames.add(key)
+    }
+  }
+
+  const fields: Array<{ name: string; type: BasicType }> = []
+
+  for (const name of fieldNames) {
+    let inferredType: BasicType = 'STRING' // Default fallback for all-null columns
+
+    // Scan rows to find the first non-null value for type inference
+    for (const row of rows) {
+      const value = row[name]
+
+      if (value === null || value === undefined) {
+        continue
+      }
+
+      // Found a non-null value, infer its Parquet type
+      inferredType = inferParquetType(value)
+      break
+    }
+
+    fields.push({ name, type: inferredType })
+  }
+
+  return fields
+}
