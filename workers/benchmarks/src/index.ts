@@ -18,7 +18,8 @@ import {
   type CDCDeltaTable,
   aggregate,
 } from '../../../src/index.js'
-import { R2Storage } from '../../../src/storage/index.js'
+import { R2Storage, createAsyncBuffer } from '../../../src/storage/index.js'
+import { parquetReadObjects } from '@dotdo/hyparquet'
 
 interface Env {
   BUCKET: R2Bucket
@@ -700,12 +701,50 @@ async function handleBenchmark(
     })
   }
 
+  // GET /benchmark/parquet?file=xxx&limit=100 - Read raw parquet file from R2
+  if (path[1] === 'parquet') {
+    const file = url.searchParams.get('file')
+    if (!file) {
+      return jsonResponse({
+        error: 'file parameter required',
+        example: '/benchmark/parquet?file=clickbench/hits_75.parquet&limit=100',
+        available: 'clickbench/hits_75.parquet (87MB, ~1M rows)',
+      }, 400)
+    }
+
+    const limit = parseInt(url.searchParams.get('limit') ?? '1000')
+    const countOnly = url.searchParams.get('count') === 'true'
+
+    try {
+      // Create async buffer for R2 file
+      const asyncBuffer = await createAsyncBuffer(storage, file)
+
+      // Read parquet with row-oriented output
+      const allRows = await parquetReadObjects({ file: asyncBuffer }) as Record<string, unknown>[]
+      const rows = countOnly ? [] : allRows.slice(0, limit)
+
+      return jsonResponse({
+        file,
+        totalRows: allRows.length,
+        returnedRows: rows.length,
+        latencyMs: performance.now() - start,
+        sample: countOnly ? undefined : rows.slice(0, 5),
+      })
+    } catch (error) {
+      return jsonResponse({
+        error: error instanceof Error ? error.message : 'Failed to read parquet',
+        file,
+      }, 500)
+    }
+  }
+
   return jsonResponse({
     endpoints: {
       '/benchmark/ingest/{implementation}': 'Test ingest performance (mongolake, kafkalake, parquedb)',
       '/benchmark/query/{implementation}': 'Test query performance',
       '/benchmark/compare/ingest': 'Compare all implementations side-by-side',
       '/benchmark/clickbench?table=xxx': 'Run actual ClickBench queries on a table',
+      '/benchmark/parquet?file=xxx': 'Read raw parquet file from R2 (use for ClickBench data)',
     },
   })
 }

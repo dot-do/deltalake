@@ -11,5 +11,10 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250124.0",
     "wrangler": "^4.62.0"
+  },
+  "dependencies": {
+    "@dotdo/hyparquet": "^1.17.3",
+    "@duckdb/duckdb-wasm": "^1.33.1-dev18.0",
+    "hyparquet": "^1.24.1"
   }
 }
