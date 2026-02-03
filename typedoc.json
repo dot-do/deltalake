@@ -1,0 +1,41 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "name": "@dotdo/deltalake",
+  "entryPoints": [
+    "src/index.ts",
+    "src/storage/index.ts",
+    "src/parquet/index.ts",
+    "src/query/index.ts",
+    "src/cdc/index.ts",
+    "src/delta/index.ts",
+    "src/compaction/index.ts",
+    "src/errors.ts"
+  ],
+  "out": "docs",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "README.md",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "includeVersion": true,
+  "categorizeByGroup": true,
+  "categoryOrder": [
+    "Storage",
+    "Delta",
+    "Parquet",
+    "Query",
+    "CDC",
+    "Compaction",
+    "Errors",
+    "*"
+  ],
+  "sort": ["source-order", "alphabetical"],
+  "validation": {
+    "notExported": true,
+    "invalidLink": true,
+    "notDocumented": false
+  },
+  "navigationLinks": {
+    "GitHub": "https://github.com/dot-do/deltalake"
+  }
+}

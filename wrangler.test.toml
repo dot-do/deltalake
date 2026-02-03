@@ -1,0 +1,9 @@
+# Test configuration for vitest-pool-workers
+name = "deltalake-test"
+main = "src/index.ts"
+compatibility_date = "2025-01-29"
+compatibility_flags = ["nodejs_compat"]
+
+[[r2_buckets]]
+binding = "TEST_BUCKET"
+bucket_name = "test-bucket"

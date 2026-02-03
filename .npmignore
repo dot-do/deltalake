@@ -1,0 +1,31 @@
+# Test files
+tests/
+*.test.ts
+*.spec.ts
+vitest*.config.ts
+
+# Development files
+.beads/
+.claude/
+.git/
+.github/
+
+# Source files (we publish dist/)
+src/
+tsconfig.json
+
+# Config files
+.editorconfig
+.eslintrc*
+.prettierrc*
+wrangler.toml
+wrangler*.toml
+
+# IDE
+.vscode/
+.idea/
+
+# Misc
+*.log
+.DS_Store
+coverage/
