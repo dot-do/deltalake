@@ -579,11 +579,133 @@ async function handleBenchmark(
     })
   }
 
+  // GET /benchmark/clickbench?table=xxx - Run actual ClickBench queries
+  if (path[1] === 'clickbench') {
+    const tableName = url.searchParams.get('table')
+    if (!tableName) {
+      return jsonResponse({ error: 'table parameter required (use a table created by /benchmark/ingest)' }, 400)
+    }
+
+    const table = new DeltaTable<ClickBenchHit>(storage, `mongolake/benchmark/${tableName}`)
+
+    // ClickBench queries we can support with our aggregation pipeline
+    const clickbenchQueries = [
+      {
+        id: 'Q0',
+        sql: 'SELECT COUNT(*) FROM hits',
+        pipeline: [{ $count: 'count' }],
+      },
+      {
+        id: 'Q1',
+        sql: 'SELECT COUNT(*) FROM hits WHERE AdvEngineID <> 0',
+        filter: { AdvEngineID: { $ne: 0 } },
+        pipeline: [{ $count: 'count' }],
+      },
+      {
+        id: 'Q2',
+        sql: 'SELECT SUM(AdvEngineID), COUNT(*), AVG(ResolutionWidth) FROM hits',
+        pipeline: [{ $group: { _id: null, sumAdvEngine: { $sum: '$AdvEngineID' }, count: { $count: {} }, avgWidth: { $avg: '$ResolutionWidth' } } }],
+      },
+      {
+        id: 'Q6',
+        sql: 'SELECT MIN(EventDate), MAX(EventDate) FROM hits',
+        pipeline: [{ $group: { _id: null, minDate: { $min: '$EventDate' }, maxDate: { $max: '$EventDate' } } }],
+      },
+      {
+        id: 'Q7',
+        sql: 'SELECT AdvEngineID, COUNT(*) FROM hits WHERE AdvEngineID <> 0 GROUP BY AdvEngineID ORDER BY COUNT(*) DESC',
+        filter: { AdvEngineID: { $ne: 0 } },
+        pipeline: [
+          { $group: { _id: '$AdvEngineID', count: { $count: {} } } },
+          { $sort: { count: -1 } },
+          { $limit: 10 },
+        ],
+      },
+      {
+        id: 'Q8',
+        sql: 'SELECT RegionID, COUNT(*) FROM hits GROUP BY RegionID ORDER BY COUNT(*) DESC LIMIT 10',
+        pipeline: [
+          { $group: { _id: '$RegionID', count: { $count: {} } } },
+          { $sort: { count: -1 } },
+          { $limit: 10 },
+        ],
+      },
+      {
+        id: 'Q15',
+        sql: 'SELECT UserID, COUNT(*) FROM hits GROUP BY UserID ORDER BY COUNT(*) DESC LIMIT 10',
+        pipeline: [
+          { $group: { _id: '$UserID', count: { $count: {} } } },
+          { $sort: { count: -1 } },
+          { $limit: 10 },
+        ],
+      },
+      {
+        id: 'Q33',
+        sql: 'SELECT URL, COUNT(*) FROM hits GROUP BY URL ORDER BY COUNT(*) DESC LIMIT 10',
+        pipeline: [
+          { $group: { _id: '$URL', count: { $count: {} } } },
+          { $sort: { count: -1 } },
+          { $limit: 10 },
+        ],
+      },
+    ]
+
+    const results: Array<{
+      id: string
+      sql: string
+      latencyMs: number
+      resultCount: number
+      sample: unknown
+    }> = []
+
+    for (const q of clickbenchQueries) {
+      const queryStart = performance.now()
+
+      // Apply filter if present, otherwise get all docs
+      const docs = q.filter ? await table.query(q.filter) : await table.query()
+      const aggResult = aggregate(docs, q.pipeline)
+
+      results.push({
+        id: q.id,
+        sql: q.sql,
+        latencyMs: performance.now() - queryStart,
+        resultCount: aggResult.documents.length,
+        sample: aggResult.documents.slice(0, 3),
+      })
+    }
+
+    return jsonResponse({
+      tableName,
+      queryCount: results.length,
+      results,
+      totalLatencyMs: performance.now() - start,
+    })
+  }
+
+  // GET /benchmark/load?partition=0 - Load ClickBench partition from source
+  if (path[1] === 'load') {
+    const partition = parseInt(url.searchParams.get('partition') ?? '0')
+    const limit = parseInt(url.searchParams.get('limit') ?? '10000') // Default 10K rows
+
+    // ClickBench partitioned files URL
+    const partitionUrl = `https://datasets.clickhouse.com/hits_compatible/athena_partitioned/hits_${partition}.parquet`
+
+    return jsonResponse({
+      message: 'ClickBench data loading not yet implemented',
+      note: 'The partitioned files are ~140MB each. For now, use /benchmark/ingest to generate synthetic data.',
+      partitionUrl,
+      partition,
+      limit,
+      suggestion: 'To load real ClickBench data, download the parquet file and upload to R2 directly',
+    })
+  }
+
   return jsonResponse({
     endpoints: {
       '/benchmark/ingest/{implementation}': 'Test ingest performance (mongolake, kafkalake, parquedb)',
       '/benchmark/query/{implementation}': 'Test query performance',
       '/benchmark/compare/ingest': 'Compare all implementations side-by-side',
+      '/benchmark/clickbench?table=xxx': 'Run actual ClickBench queries on a table',
     },
   })
 }
